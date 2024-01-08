@@ -1,5 +1,6 @@
 package com.medilabosolutions.patientService.service;
 
+import com.medilabosolutions.patientService.dto.PatientDTO;
 import com.medilabosolutions.patientService.model.Patient;
 import com.medilabosolutions.patientService.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
