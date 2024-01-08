@@ -2,11 +2,13 @@ package com.medilabosolutions.patientService.model;
 
 import com.medilabosolutions.patientService.model.enums.Gender;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "patients")
+@Data
 public class Patient {
 
     @Id
