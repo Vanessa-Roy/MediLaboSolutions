@@ -27,7 +27,9 @@ public class PatientController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the patients from the user",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = String.class))}),})
+                            schema = @Schema(implementation = String.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/patients")
     public List<PatientDTO> getPatients() {
         return patientService.findAll().stream().map(patientMapper::from).toList();
