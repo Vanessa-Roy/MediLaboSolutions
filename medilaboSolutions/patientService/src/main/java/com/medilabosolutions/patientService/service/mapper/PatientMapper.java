@@ -1,6 +1,6 @@
 package com.medilabosolutions.patientService.service.mapper;
 
-import com.medilabosolutions.patientService.dto.PatientDTO;
+import com.medilabosolutions.patientService.dtos.PatientDTO;
 import com.medilabosolutions.patientService.model.Patient;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

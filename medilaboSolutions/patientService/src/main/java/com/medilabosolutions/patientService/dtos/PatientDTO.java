@@ -1,11 +1,13 @@
-package com.medilabosolutions.patientService.dto;
+package com.medilabosolutions.patientService.dtos;
 
 import com.medilabosolutions.patientService.model.enums.Gender;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
 public class PatientDTO {
     private Long id;
     private String firstname;
