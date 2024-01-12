@@ -28,6 +28,6 @@ public class Patient {
     @Column(nullable = false)
     private String address;
     @Column(nullable = false)
-    private Long phone;
+    private String phone;
 
 }

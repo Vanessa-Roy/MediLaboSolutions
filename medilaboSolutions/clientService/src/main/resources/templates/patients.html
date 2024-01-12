@@ -18,8 +18,8 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Firstname</th>
                         <th>Lastname</th>
+                        <th>Firstname</th>
                         <th>Birthdate</th>
                         <th>Gender</th>
                         <th>Address</th>
@@ -29,8 +29,8 @@
                         <td colspan="2"> No Patients Available </td>
                     </tr>
                     <tr th:unless="${#lists.isEmpty(patientList)}" th:each="p:${patientList}">
-                        <td th:text="${p.firstname}"></td>
                         <td th:text="${p.lastname}"></td>
+                        <td th:text="${p.firstname}"></td>
                         <td th:text="${p.birthdate}"></td>
                         <td th:text="${p.gender}"></td>
                         <td th:text="${p.address}"></td>
