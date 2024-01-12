@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,7 +22,7 @@ public class ClientController {
     public String getPatients(Model model) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        List<PatientDTO> patientList = new ArrayList<>();
+        List<PatientDTO> patientList = mapper.readValue(new URL(gatewayUrl + "/patients"), new TypeReference<>() {});
         model.addAttribute("patientList", patientList);
         return "patients";
     }
