@@ -32,7 +32,7 @@ public class PatientController {
     })
     @GetMapping("/patients")
     public List<PatientDTO> getPatients() {
-        return patientService.findAll().stream().map(patientMapper::from).toList();
+        return patientService.getPatients().stream().map(patientMapper::from).toList();
     }
 
 

@@ -24,10 +24,10 @@ public class PatientServiceTest {
     PatientServiceDefaultImpl patientService;
 
     @Test
-    void findAllShouldCallFindAllRepositoryTest() {
+    void getPatientsShouldCallFindAllRepositoryTest() {
         when(patientRepository.findAll()).thenReturn(new ArrayList<>());
 
-        patientService.findAll();
+        patientService.getPatients();
 
         verify(patientRepository, Mockito.times(1)).findAll();
     }

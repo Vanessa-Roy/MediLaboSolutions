@@ -14,7 +14,7 @@ public class PatientServiceDefaultImpl implements PatientService {
     PatientRepository patientRepository;
 
     @Override
-    public List<Patient> findAll() {
+    public List<Patient> getPatients() {
         return patientRepository.findAll();
     };
 }

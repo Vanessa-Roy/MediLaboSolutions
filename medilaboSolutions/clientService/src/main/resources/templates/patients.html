@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Medilabo Solutions - Patients</title>
+    <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="p-3">
+        <div class="card">
+            <div class="card-header">My patients</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Birthdate</th>
+                        <th>Gender</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                    </tr>
+                    <tr th:each="patient:${listPatients}"></tr>
+                    <td th:text="${patient.firstname}"></td>
+                    <td th:text="${patient.lastname}"></td>
+                    <td th:text="${patient.birthdate}"></td>
+                    <td th:text="${patient.gender}"></td>
+                    <td th:text="${patient.address}"></td>
+                    <td th:text="${patient.phone}"></td>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
