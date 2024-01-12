@@ -23,6 +23,7 @@ public class Patient {
     @Column(nullable = false)
     private LocalDate birthdate;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(nullable = false)
     private String address;

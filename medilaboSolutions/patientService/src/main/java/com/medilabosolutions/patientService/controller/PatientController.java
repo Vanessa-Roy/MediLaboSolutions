@@ -1,8 +1,8 @@
 package com.medilabosolutions.patientService.controller;
 
-import com.medilabosolutions.patientService.dtos.PatientDTO;
+import com.medilabosolutions.patientService.controller.dtos.PatientDTO;
 import com.medilabosolutions.patientService.service.PatientService;
-import com.medilabosolutions.patientService.service.mapper.PatientMapper;
+import com.medilabosolutions.patientService.mapper.PatientMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

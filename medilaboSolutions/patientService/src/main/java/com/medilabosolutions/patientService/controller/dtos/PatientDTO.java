@@ -1,5 +1,6 @@
-package com.medilabosolutions.patientService.dtos;
+package com.medilabosolutions.patientService.controller.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medilabosolutions.patientService.model.enums.Gender;
 import lombok.Getter;
 import lombok.Setter;

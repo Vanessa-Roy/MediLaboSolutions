@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id : getPatients
+          uri: http://localhost:8081/
+          predicates:
+            - Path= /patients
+server:
+  port: 8888
