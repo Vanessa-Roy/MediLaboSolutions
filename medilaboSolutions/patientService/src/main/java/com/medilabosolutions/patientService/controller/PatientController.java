@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,6 +34,11 @@ public class PatientController {
     @GetMapping("/patients")
     public List<PatientDTO> getPatients() {
         return patientService.getPatients().stream().map(patientMapper::from).toList();
+    }
+
+    @GetMapping("/patient")
+    public PatientDTO getPatientById(@RequestParam String id) {
+        return patientMapper.from(patientService.getPatientById(id));
     }
 
 
