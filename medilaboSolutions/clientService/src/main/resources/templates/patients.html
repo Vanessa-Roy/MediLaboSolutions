@@ -40,7 +40,11 @@
                         <td th:text="${p.birthdate}"></td>
                         <td th:text="${p.gender}"></td>
                         <td th:text="${p.address}"></td>
-                        <td th:text="${p.getPhoneFormat()}"></td>
+                        <td th:unless="${p.phone} == null">
+                            <span th:if="${p.phone.length} >= 10" th:text="${p.getPhoneFormat()}"></span>
+                            <span th:if="${p.phone.length} == 0"></span>
+                        </td>
+                        <td th:if="${p.phone} == null"></td>
                         <td>
                             <a th:href="@{updatePatient(id=${p.id})}" class="btn btn-outline-secondary btn-sm" >UPDATE</a>
                         </td>

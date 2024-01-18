@@ -26,4 +26,11 @@ public class PatientServiceDefaultImpl implements PatientService {
         }
         return null;
     }
+
+    @Override
+    public void updatePatient(Patient patient) {
+        if (patientRepository.findById(patient.getId()).isPresent()) {
+            patientRepository.save(patient);
+        }
+    }
 }

@@ -11,4 +11,8 @@ public class PatientMapper {
     public PatientDTO from(Patient patient) {
         return modelMapper.map(patient, PatientDTO.class);
     }
+
+    public Patient to(PatientDTO patient) {
+        return modelMapper.map(patient, Patient.class);
+    }
 }

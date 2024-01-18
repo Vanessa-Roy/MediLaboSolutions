@@ -11,8 +11,7 @@
         crossorigin="anonymous">
 </head>
 <body>
-<div class="p-3">
-  <div class="row col-md-8 offset-md-2">
+  <div class="p-3">
     <div th:if="${errorMessage}">
       <div class="alert alert-danger">
         <span th:text="${errorMessage}"></span>
@@ -24,7 +23,7 @@
       <form
         method="post"
         role="form"
-        th:action="@{/updatePatient}"
+        th:action="@{/updatePatient?id=} + *{id}"
         th:object="${patient}"
         >
         <table class="table">
@@ -72,9 +71,9 @@
                  th:if="${#fields.hasErrors('birthdate')}"></p>
             </td>
             <td>
-              <select name="gender" class="form-control">
+              <select name="gender" class="form-control" th:field="*{gender}">
                 <option th:each="genderOpt : ${T(com.medilabosolutions.clientService.controller.dtos.enums.Gender).values()}"
-                        th:value="${genderOpt}" th:text="${genderOpt}"></option>
+                        th:value="${genderOpt}" th:text="${genderOpt}" ></option>
               </select>
             </td>
             <td>

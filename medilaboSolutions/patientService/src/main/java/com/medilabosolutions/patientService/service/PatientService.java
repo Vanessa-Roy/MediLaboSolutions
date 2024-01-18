@@ -11,4 +11,6 @@ public interface PatientService {
     List<Patient> getPatients();
 
     Patient getPatientById(String id);
+
+    void updatePatient(Patient patient);
 }

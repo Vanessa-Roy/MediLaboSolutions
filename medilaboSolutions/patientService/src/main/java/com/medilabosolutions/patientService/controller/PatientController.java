@@ -9,9 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +37,12 @@ public class PatientController {
     @GetMapping("/patient")
     public PatientDTO getPatientById(@RequestParam String id) {
         return patientMapper.from(patientService.getPatientById(id));
+    }
+
+    @PutMapping("/updatePatient")
+    public void updatePatient(@RequestBody PatientDTO patientDTO) {
+        System.out.println("i'm here");
+        patientService.updatePatient(patientMapper.to(patientDTO));
     }
 
 
