@@ -1,8 +1,8 @@
 package com.medilabosolutions.patientService.controller;
 
 import com.medilabosolutions.patientService.controller.dtos.PatientDTO;
-import com.medilabosolutions.patientService.service.PatientService;
 import com.medilabosolutions.patientService.mapper.PatientMapper;
+import com.medilabosolutions.patientService.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,7 +41,6 @@ public class PatientController {
 
     @PutMapping("/updatePatient")
     public void updatePatient(@RequestBody PatientDTO patientDTO) {
-        System.out.println("i'm here");
         patientService.updatePatient(patientMapper.to(patientDTO));
     }
 
