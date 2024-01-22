@@ -5,14 +5,6 @@ spring:
         - id : getPatients
           uri: http://localhost:8081/
           predicates:
-            - Path= /patients
-        - id: getPatient
-          uri: http://localhost:8081/
-          predicates:
-            - Path= /patient/**
-        - id: updatePatient
-          uri: http://localhost:8081/
-          predicates:
-            - Path= /updatePatient/**
+            - Path= /patients/**
 server:
   port: 8888

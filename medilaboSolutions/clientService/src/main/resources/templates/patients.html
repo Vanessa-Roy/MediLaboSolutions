@@ -46,7 +46,7 @@
                         </td>
                         <td th:if="${p.phone} == null"></td>
                         <td>
-                            <a th:href="@{updatePatient(id=${p.id})}" class="btn btn-outline-secondary btn-sm" >UPDATE</a>
+                            <a th:href="@{patients/{id}(id = ${p.id})}" class="btn btn-outline-secondary btn-sm" >UPDATE</a>
                         </td>
                     </tr>
                     </thead>

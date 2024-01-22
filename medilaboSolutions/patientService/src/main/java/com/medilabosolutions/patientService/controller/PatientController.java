@@ -34,13 +34,13 @@ public class PatientController {
         return patientService.getPatients().stream().map(patientMapper::from).toList();
     }
 
-    @GetMapping("/patient")
-    public PatientDTO getPatientById(@RequestParam String id) {
+    @GetMapping("/patients/{id}")
+    public PatientDTO getPatientById(@PathVariable String id) {
         return patientMapper.from(patientService.getPatientById(id));
     }
 
-    @PutMapping("/updatePatient")
-    public void updatePatient(@RequestBody PatientDTO patientDTO) {
+    @PutMapping("/patients/{id}")
+    public void updatePatient(@RequestBody PatientDTO patientDTO, @PathVariable String id) {
         patientService.updatePatient(patientMapper.to(patientDTO));
     }
 

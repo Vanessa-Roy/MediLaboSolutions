@@ -23,7 +23,7 @@
       <form
         method="post"
         role="form"
-        th:action="@{/updatePatient?id=} + *{id}"
+        th:action="@{/patients/{id}(id = *{id})}"
         th:object="${patient}"
         >
         <table class="table">
