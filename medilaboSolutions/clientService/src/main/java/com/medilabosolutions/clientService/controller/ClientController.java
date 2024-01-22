@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,11 +30,29 @@ public class ClientController {
     @Value("${gateway.url}")
     private String gatewayUrl;
 
-    @GetMapping("/patients")
-    public String getPatients(Model model) throws IOException {
+    @Value("${user.username}")
+    private String username;
+
+    @Value("${user.password}")
+    private String userPassword;
+
+    public static ObjectMapper mapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        List<PatientDTO> patientList = mapper.readValue(new URL(gatewayUrl + "/patients"), new TypeReference<>() {
+        return mapper;
+    }
+
+    @GetMapping("/patients")
+    public String getPatients(Model model) throws IOException, InterruptedException, URISyntaxException {
+        HttpClient client = HttpClient.newHttpClient();
+        String valueToEncode = username + ":" + userPassword;
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(new URI(gatewayUrl + "/patients"))
+                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes()))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        List<PatientDTO> patientList = mapper().readValue(response.body(), new TypeReference<>() {
         });
         patientList.sort(Comparator.comparing(PatientDTO::getId));
         model.addAttribute("patientList", patientList);
@@ -41,10 +60,16 @@ public class ClientController {
     }
 
     @GetMapping("/patients/{id}")
-    public String updatePatient(@PathVariable String id, Model model) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        PatientDTO patient = mapper.readValue(new URL(gatewayUrl + "/patients/" + id), new TypeReference<>() {
+    public String updatePatient(@PathVariable String id, Model model) throws IOException, URISyntaxException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        String valueToEncode = username + ":" + userPassword;
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(new URI(gatewayUrl + "/patients/" + id))
+                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes()))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        PatientDTO patient = mapper().readValue(response.body(), new TypeReference<>() {
         });
         model.addAttribute("patient", patient);
         return "updatePatient";
@@ -58,19 +83,20 @@ public class ClientController {
         try {
             if (patient != null) {
 
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.registerModule(new JavaTimeModule());
+                String requestBody = mapper().writeValueAsString(patient);
 
-                String requestBody = mapper.writeValueAsString(patient);
-
+                HttpClient client = HttpClient.newHttpClient();
+                String valueToEncode = username + ":" + userPassword;
                 HttpRequest request = HttpRequest.newBuilder()
                         .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
-                        .uri(URI.create(gatewayUrl + "/patients/" + id))
+                        .uri(new URI(gatewayUrl + "/patients/" + id))
                         .header("Content-Type", "application/json")
+                        .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes()))
                         .build();
-
-                HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() >= 400) {
+                    throw new Exception(response.body());
+                }
                 return "redirect:/patients?success";
             }
         } catch (Exception e) {
