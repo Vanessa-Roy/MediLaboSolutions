@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ClientControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
     @Test
     void shouldDisplayPatientsViewTest() throws Exception {
         this.mockMvc
@@ -37,7 +38,16 @@ public class ClientControllerTest {
     }
 
     @Test
-    void shouldUpdatePatient1Test() throws Exception {
+    void shouldDenyUpdateNonExistentPatientViewTest() throws Exception {
+        this.mockMvc
+                .perform(get("/patients/5"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error"))
+                .andExpect(model().attributeExists("errorMessage"));
+    }
+
+    @Test
+    void shouldUpdateExistentPatientTest() throws Exception {
         this.mockMvc
                 .perform(post("/patients/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -58,5 +68,20 @@ public class ClientControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("updatePatient"));
     }
+
+    @Test
+    void shouldNotUpdateNonExistentPatientTest() throws Exception {
+        this.mockMvc
+                .perform(post("/patients/5")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("firstname","firstname")
+                        .param("lastname","lastname")
+                        .param("birthdate", LocalDate.now().toString())
+                        .param("gender","F"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("error"))
+                .andExpect(model().attributeExists("errorMessage"));
+    }
+    
 
 }

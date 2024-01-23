@@ -9,10 +9,18 @@ import org.springframework.stereotype.Service;
 public class PatientMapper {
     private final ModelMapper modelMapper = new ModelMapper();
     public PatientDTO from(Patient patient) {
-        return modelMapper.map(patient, PatientDTO.class);
+        if (patient == null) {
+            return null;
+        } else {
+            return modelMapper.map(patient, PatientDTO.class);
+        }
     }
 
     public Patient to(PatientDTO patient) {
-        return modelMapper.map(patient, Patient.class);
+        if (patient == null) {
+            return null;
+        } else {
+            return modelMapper.map(patient, Patient.class);
+        }
     }
 }

@@ -19,17 +19,16 @@ public class PatientServiceDefaultImpl implements PatientService {
     };
 
     @Override
-    public Patient getPatientById(String id) {
-        if (patientRepository.findById(Long.valueOf(id)).isPresent()) {
-            return patientRepository.findById(Long.valueOf(id)).get();
-        }
-        return null;
+    public Patient getPatientById(Long id) {
+        return patientRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void updatePatient(Patient patient) {
-        if (patientRepository.findById(patient.getId()).isPresent()) {
+    public void updatePatient(Patient patient, Long id) throws Exception {
+        if (id.equals(patient.getId()) && patientRepository.findById(patient.getId()).isPresent()) {
             patientRepository.save(patient);
+        } else {
+            throw new Exception("Patient Incorrect");
         }
     }
 }

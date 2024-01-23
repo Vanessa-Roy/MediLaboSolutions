@@ -40,19 +40,19 @@ public class PatientServiceTest {
         Patient patientTest = new Patient();
         when(patientRepository.findById(1L)).thenReturn(Optional.of(patientTest));
 
-        patientService.getPatientById("1");
+        patientService.getPatientById(1L);
 
-        verify(patientRepository, Mockito.times(2)).findById(anyLong());
+        verify(patientRepository, Mockito.times(1)).findById(anyLong());
     }
 
     @Test
-    void updatePatientShouldCallSaveRepositoryTest() {
+    void updatePatientShouldCallSaveRepositoryTest() throws Exception {
         Patient patientTest = new Patient();
         patientTest.setId(1L);
         when(patientRepository.findById(1L)).thenReturn(Optional.of(patientTest));
         when(patientRepository.save(patientTest)).thenReturn(patientTest);
 
-        patientService.updatePatient(patientTest);
+        patientService.updatePatient(patientTest, 1L);
 
         verify(patientRepository, Mockito.times(1)).findById(1L);
         verify(patientRepository, Mockito.times(1)).save(patientTest);

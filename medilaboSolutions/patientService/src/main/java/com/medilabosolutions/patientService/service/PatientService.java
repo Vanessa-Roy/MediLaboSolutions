@@ -8,7 +8,7 @@ public interface PatientService {
 
     List<Patient> getPatients();
 
-    Patient getPatientById(String id);
+    Patient getPatientById(Long id);
 
-    void updatePatient(Patient patient);
+    void updatePatient(Patient patient, Long id) throws Exception;
 }

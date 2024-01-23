@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,13 +37,19 @@ public class PatientController {
     }
 
     @GetMapping("/patients/{id}")
-    public PatientDTO getPatientById(@PathVariable String id) {
+    public PatientDTO getPatientById(@PathVariable Long id) {
         return patientMapper.from(patientService.getPatientById(id));
     }
 
     @PutMapping("/patients/{id}")
-    public void updatePatient(@RequestBody PatientDTO patientDTO, @PathVariable String id) {
-        patientService.updatePatient(patientMapper.to(patientDTO));
+    public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patientDTO, @PathVariable Long id) {
+        try {
+            patientService.updatePatient(patientMapper.to(patientDTO), id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
 
 
