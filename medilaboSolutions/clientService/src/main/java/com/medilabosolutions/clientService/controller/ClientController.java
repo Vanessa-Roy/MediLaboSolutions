@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -43,7 +41,7 @@ public class ClientController {
     }
 
     @GetMapping("/patients")
-    public String getPatients(Model model) throws IOException, InterruptedException, URISyntaxException {
+    public String getPatients(Model model) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
         String valueToEncode = username + ":" + userPassword;
         HttpRequest request = HttpRequest.newBuilder()
@@ -52,15 +50,24 @@ public class ClientController {
                 .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes()))
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        List<PatientDTO> patientList = mapper().readValue(response.body(), new TypeReference<>() {
-        });
-        patientList.sort(Comparator.comparing(PatientDTO::getId));
-        model.addAttribute("patientList", patientList);
-        return "patients";
+        if (response.statusCode() == 401) {
+            model.addAttribute("errorMessage", "You don't have the authorization");
+            return "error";
+        }
+        try {
+            List<PatientDTO> patientList = mapper().readValue(response.body(), new TypeReference<>() {
+            });
+            patientList.sort(Comparator.comparing(PatientDTO::getId));
+            model.addAttribute("patientList", patientList);
+            return "patients";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
     }
 
     @GetMapping("/patients/{id}")
-    public String updatePatient(@PathVariable String id, Model model) throws IOException, URISyntaxException, InterruptedException {
+    public String updatePatient(@PathVariable String id, Model model) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
         String valueToEncode = username + ":" + userPassword;
         HttpRequest request = HttpRequest.newBuilder()
@@ -69,10 +76,19 @@ public class ClientController {
                 .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes()))
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        PatientDTO patient = mapper().readValue(response.body(), new TypeReference<>() {
-        });
-        model.addAttribute("patient", patient);
-        return "updatePatient";
+        if (response.statusCode() == 401) {
+            model.addAttribute("errorMessage", "You don't have the authorization");
+            return "error";
+        }
+        try {
+            PatientDTO patient = mapper().readValue(response.body(), new TypeReference<>() {
+            });
+            model.addAttribute("patient", patient);
+            return "updatePatient";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
     }
 
     @PostMapping("/patients/{id}")
@@ -81,7 +97,7 @@ public class ClientController {
             return "updatePatient";
         }
         try {
-            if (patient != null) {
+            if (patient != null && Long.valueOf(id).equals(patient.getId())) {
 
                 String requestBody = mapper().writeValueAsString(patient);
 
@@ -94,8 +110,9 @@ public class ClientController {
                         .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes()))
                         .build();
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                if (response.statusCode() >= 400) {
-                    throw new Exception(response.body());
+                if (response.statusCode() == 401) {
+                    model.addAttribute("errorMessage", "You don't have the authorization");
+                    return "error";
                 }
                 return "redirect:/patients?success";
             }

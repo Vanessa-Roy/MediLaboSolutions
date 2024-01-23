@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -15,29 +16,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ClientControllerTest {
+@ActiveProfiles("test-unauthorizedUser")
+public class ClientControllerUnauthorizedUserTest {
+
     @Autowired
     private MockMvc mockMvc;
     @Test
-    void shouldDisplayPatientsViewTest() throws Exception {
+    void shouldDenyPatientsViewForUnauthorizedUserTest() throws Exception {
         this.mockMvc
                 .perform(get("/patients"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("patients"))
-                .andExpect(model().attributeExists("patientList"));
+                .andExpect(view().name("error"))
+                .andExpect(model().attributeExists("errorMessage"));
     }
 
     @Test
-    void shouldDisplayUpdatePatientViewTest() throws Exception {
+    void shouldDenyUpdatePatientViewForUnauthorizedUserTest() throws Exception {
         this.mockMvc
                 .perform(get("/patients/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("updatePatient"))
-                .andExpect(model().attributeExists("patient"));
+                .andExpect(view().name("error"))
+                .andExpect(model().attributeExists("errorMessage"));
     }
 
     @Test
-    void shouldUpdatePatient1Test() throws Exception {
+    void shouldNotUpdatePatientForUnauthorizedUserTest() throws Exception {
         this.mockMvc
                 .perform(post("/patients/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -45,18 +48,8 @@ public class ClientControllerTest {
                         .param("lastname","lastname")
                         .param("birthdate", LocalDate.now().toString())
                         .param("gender","F"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/patients?success"));
+                .andExpect(status().isOk())
+                .andExpect(view().name("error"))
+                .andExpect(model().attributeExists("errorMessage"));
     }
-
-    @Test
-    void shouldNotUpdatePatientWithoutMandatoryValueTest() throws Exception {
-        this.mockMvc
-                .perform(post("/patients/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("firstname","firstname"))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("updatePatient"));
-    }
-
 }

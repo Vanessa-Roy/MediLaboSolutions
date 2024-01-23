@@ -89,7 +89,7 @@ public class PatientIntegrationTest {
     @Test
     void getPatientByIdShouldReturnOneOfThePatientCasesTest() {
 
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patient?id=" + patientId ,
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId ,
                 String.class)).contains(loadJson("OneOfThePatientCases.json"));
     }
 
@@ -98,13 +98,13 @@ public class PatientIntegrationTest {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(loadJson("UpdateOneOfThePatientCases.json")))
-                .uri(URI.create("http://localhost:" + port + "/updatePatient"))
+                .uri(URI.create("http://localhost:" + port + "/patients/" + patientId))
                 .header("Content-Type", "application/json")
                 .build();
 
         HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patient?id=" + patientId ,
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId ,
                 String.class)).contains(loadJson("UpdateOneOfThePatientCases.json"));
     }
 }
