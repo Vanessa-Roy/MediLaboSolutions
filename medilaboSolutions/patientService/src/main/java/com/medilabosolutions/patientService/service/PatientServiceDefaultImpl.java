@@ -17,4 +17,18 @@ public class PatientServiceDefaultImpl implements PatientService {
     public List<Patient> getPatients() {
         return patientRepository.findAll();
     };
+
+    @Override
+    public Patient getPatientById(Long id) {
+        return patientRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void updatePatient(Patient patient, Long id) throws Exception {
+        if (id.equals(patient.getId()) && patientRepository.findById(patient.getId()).isPresent()) {
+            patientRepository.save(patient);
+        } else {
+            throw new Exception("Patient Incorrect");
+        }
+    }
 }

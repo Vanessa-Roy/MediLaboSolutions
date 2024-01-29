@@ -12,6 +12,11 @@
 </head>
 <body>
     <div class="p-3">
+        <div th:if="${param.success}">
+            <div class="alert alert-info">
+                You have successfully updated your patient!
+            </div>
+        </div>
         <div class="card">
             <div class="card-header">My patients</div>
             <div class="card-body">
@@ -24,6 +29,7 @@
                         <th>Gender</th>
                         <th>Address</th>
                         <th>Phone</th>
+                        <th>Action</th>
                     </tr>
                     <tr th:if="${#lists.isEmpty(patientList)}">
                         <td colspan="2"> No Patients Available </td>
@@ -34,7 +40,14 @@
                         <td th:text="${p.birthdate}"></td>
                         <td th:text="${p.gender}"></td>
                         <td th:text="${p.address}"></td>
-                        <td th:text="${p.getPhoneFormat()}"></td>
+                        <td th:unless="${p.phone} == null">
+                            <span th:if="${p.phone.length} >= 10" th:text="${p.getPhoneFormat()}"></span>
+                            <span th:if="${p.phone.length} == 0"></span>
+                        </td>
+                        <td th:if="${p.phone} == null"></td>
+                        <td>
+                            <a th:href="@{patients/{id}(id = ${p.id})}" class="btn btn-outline-secondary btn-sm" >UPDATE</a>
+                        </td>
                     </tr>
                     </thead>
                 </table>
