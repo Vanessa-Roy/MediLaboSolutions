@@ -14,7 +14,7 @@ public class PatientMapper {
     
     private final ObjectMapper mapper;
 
-    PatientMapper() {
+    public PatientMapper() {
         mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
     }

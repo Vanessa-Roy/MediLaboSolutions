@@ -28,6 +28,7 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -102,9 +103,26 @@ public class PatientIntegrationTest {
                 .header("Content-Type", "application/json")
                 .build();
 
-        HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> result = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(result.statusCode(), 200);
 
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId ,
                 String.class)).contains(loadJson("UpdateOneOfThePatientCases.json"));
+    }
+
+    @Test
+    void updateIncorrectPatientShouldReturnExceptionTest() throws IOException, InterruptedException {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(loadJson("UpdateOneOfThePatientCases.json")))
+                .uri(URI.create("http://localhost:" + port + "/patients/" + 5))
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> result = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(result.statusCode(), 404);
+
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId ,
+                String.class)).contains(loadJson("OneOfThePatientCases.json"));
     }
 }

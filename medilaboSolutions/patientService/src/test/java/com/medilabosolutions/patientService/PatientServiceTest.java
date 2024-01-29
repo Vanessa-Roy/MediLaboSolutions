@@ -13,6 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -56,5 +59,29 @@ public class PatientServiceTest {
 
         verify(patientRepository, Mockito.times(1)).findById(1L);
         verify(patientRepository, Mockito.times(1)).save(patientTest);
+    }
+
+    @Test
+    void updateIncorrectPatientShouldNotCallSaveRepositoryTest() {
+        Patient patientTest = new Patient();
+        patientTest.setId(1L);
+
+        Exception exception = assertThrows(Exception.class, () -> patientService.updatePatient(patientTest, 1L));
+
+        assertEquals("Patient Incorrect", exception.getMessage());
+        verify(patientRepository, Mockito.times(1)).findById(1L);
+        verify(patientRepository, Mockito.never()).save(any(Patient.class));
+    }
+
+    @Test
+    void updateDifferentPatientShouldNotCallSaveRepositoryTest() {
+        Patient patientTest = new Patient();
+        patientTest.setId(1L);
+
+        Exception exception = assertThrows(Exception.class, () -> patientService.updatePatient(patientTest, 2L));
+
+        assertEquals("Patient Incorrect", exception.getMessage());
+        verify(patientRepository, Mockito.never()).findById(1L);
+        verify(patientRepository, Mockito.never()).save(any(Patient.class));
     }
 }
