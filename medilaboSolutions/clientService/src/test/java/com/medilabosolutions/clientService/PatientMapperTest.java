@@ -38,7 +38,7 @@ public class PatientMapperTest {
 
         Resource dataPatientList = new ClassPathResource("PatientCases.json");
         patientListJson = Files.readString(dataPatientList.getFile().toPath());
-        patientList = objectMapper.readValue(patientListJson, new TypeReference<List<PatientDTO>>() {
+        patientList = objectMapper.readValue(patientListJson, new TypeReference<>() {
         });
 
         Resource dataPatient = new ClassPathResource("OneOfThePatientCases.json");
