@@ -15,6 +15,11 @@ public class Note {
 
     @Id
     private String id;
+
+    public void setPatientId(long patientId) {
+        this.patientId = patientId;
+    }
+
     private long patientId;
     private LocalDate date;
     private String content;

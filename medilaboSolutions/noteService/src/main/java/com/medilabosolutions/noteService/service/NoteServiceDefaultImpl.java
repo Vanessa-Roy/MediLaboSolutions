@@ -17,9 +17,11 @@ public class NoteServiceDefaultImpl implements NoteService {
         return noteRepository.findAllByPatientId(patientId);
     }
 
-    public Note createNote(Note noteToCreate) throws Exception {
+    public Note createNote(Note noteToCreate, long patientId) throws Exception {
         if (noteToCreate == null) {
             throw new Exception("Note to create is null");
+        } else if (patientId != noteToCreate.getPatientId()) {
+            throw new Exception("Note incorrect");
         } else {
             return noteRepository.save(noteToCreate);
         }

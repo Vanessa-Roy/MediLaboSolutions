@@ -1,6 +1,8 @@
 package com.medilabosolutions.clientService.repository;
 
+import com.medilabosolutions.clientService.controller.dtos.NoteDto;
 import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
+import com.medilabosolutions.clientService.mapper.NoteMapper;
 import com.medilabosolutions.clientService.mapper.PatientMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +30,9 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
     @Autowired
     private PatientMapper patientMapper;
 
+    @Autowired
+    private NoteMapper noteMapper;
+
     private final HttpClient client = HttpClient.newHttpClient();
 
     @Override
@@ -38,8 +43,8 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatus401(response.statusCode());
-        checkIfPatient(response.body());
+        checkIfStatusExpected(200, response.statusCode());
+        checkIfBody(response.body());
         return patientMapper.toListPatient(response.body());
     };
 
@@ -51,32 +56,65 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatus401(response.statusCode());
-        checkIfPatient(response.body());
-        return patientMapper.toPatient(response.body());
+        checkIfStatusExpected(200, response.statusCode());
+        checkIfBody(response.body());
+        return patientMapper.fromStringToPatient(response.body());
     }
 
     @Override
     public void updatePatient(PatientDTO patient) throws Exception {
-        String requestBody = patientMapper.fromPatient(patient);
+        String requestBody = patientMapper.fromPatientToString(patient);
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
                 .uri(new URI(gatewayUrl + "/patients/" + patient.getId()))
                 .header("Content-Type", "application/json")
                 .header("Authorization", getAuthorizationValue())
                 .build();
-        checkIfStatus401(client.send(request, HttpResponse.BodyHandlers.ofString()).statusCode());
+        checkIfStatusExpected(200, client.send(request, HttpResponse.BodyHandlers.ofString()).statusCode());
     }
 
-    private void checkIfStatus401(int status) throws Exception {
-        if (status == 401) {
-            throw new Exception("You don't have the authorization");
+    @Override
+    public List<NoteDto> getNotesByPatientId(long patientId) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(new URI(gatewayUrl + "/notes/" + patientId))
+                .header("Authorization", getAuthorizationValue())
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        checkIfStatusExpected(200, response.statusCode());
+        checkIfBody(response.body());
+        return noteMapper.toListNote(response.body());
+    }
+
+    @Override
+    public void addNoteToPatient(NoteDto note) throws Exception {
+        String requestBody = noteMapper.fromNoteToString(note);
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(new URI(gatewayUrl + "/notes/" + note.patientId))
+                .header("Content-Type", "application/json")
+                .header("Authorization", getAuthorizationValue())
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        checkIfStatusExpected(201, response.statusCode());
+        checkIfBody(response.body());
+    }
+
+    private void checkIfStatusExpected(int statusExpected, int status) throws Exception {
+        if (status != statusExpected) {
+            if (status == 401) {
+                throw new Exception("You don't have the authorization");
+            } else if (status == 400) {
+                throw new Exception("Bad request");
+            } else {
+                throw new Exception("An error occurred");
+            }
         }
     }
 
-    public void checkIfPatient(String response) throws Exception {
+    public void checkIfBody(String response) throws Exception {
         if (response.isEmpty()) {
-            throw new Exception("No Patient found");
+            throw new Exception("No body found");
         }
     }
 

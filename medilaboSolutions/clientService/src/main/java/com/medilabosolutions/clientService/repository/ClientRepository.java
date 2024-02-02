@@ -1,5 +1,6 @@
 package com.medilabosolutions.clientService.repository;
 
+import com.medilabosolutions.clientService.controller.dtos.NoteDto;
 import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,8 @@ public interface ClientRepository {
     PatientDTO getPatientById(Long id) throws Exception;
 
     void updatePatient(PatientDTO patient) throws Exception;
+
+    List<NoteDto> getNotesByPatientId(long patientId) throws Exception;
+
+    void addNoteToPatient(NoteDto note) throws Exception;
 }

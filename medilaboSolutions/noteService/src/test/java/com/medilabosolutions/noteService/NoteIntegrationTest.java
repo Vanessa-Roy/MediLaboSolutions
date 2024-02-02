@@ -90,7 +90,7 @@ public class NoteIntegrationTest {
     void getNotesByIdPatientShouldReturnTheListOfNotesByIdPatientTest() throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(new URI("http://localhost:" + port + "/patients/" + patientId + "/notes"))
+                .uri(new URI("http://localhost:" + port  + "/notes/" + patientId))
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(response.statusCode(), 200);
@@ -102,7 +102,7 @@ public class NoteIntegrationTest {
     void createNoteByPatientIdShouldReturnTheNoteTest() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(loadJson("CreateOneOfTheNoteByPatientId.json")))
-                .uri(URI.create("http://localhost:" + port + "/patients/" + patientId + "/notes"))
+                .uri(URI.create("http://localhost:" + port + "/notes/" + patientId))
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -116,7 +116,7 @@ public class NoteIntegrationTest {
     void createNoteByPatientIdWithEmptyBodyShouldNotReturnTheNoteTest() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
-                .uri(URI.create("http://localhost:" + port + "/patients/" + patientId + "/notes"))
+                .uri(URI.create("http://localhost:" + port + "/notes/" + patientId))
                 .header("Content-Type", "application/json")
                 .build();
 

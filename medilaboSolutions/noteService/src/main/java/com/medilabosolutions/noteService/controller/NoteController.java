@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/patients/{patientId}")
+@RequestMapping("/notes")
 public class NoteController {
 
     @Autowired
@@ -22,15 +22,15 @@ public class NoteController {
     @Autowired
     NoteMapper noteMapper;
 
-    @GetMapping("/notes")
+    @GetMapping("/{patientId}")
     public ResponseEntity<List<NoteDto>> getNotesByPatientId(@PathVariable long patientId) {
         return ResponseEntity.ok(noteService.getNotesByPatientId(patientId).stream().map(noteMapper::fromNote).toList());
     }
 
-    @PostMapping("/notes")
-    public ResponseEntity<NoteDto> createNote(@RequestBody NoteToCreateDto noteToCreate) {
+    @PostMapping("/{patientId}")
+    public ResponseEntity<NoteDto> createNote(@RequestBody NoteToCreateDto noteToCreate, @PathVariable long patientId) {
         try {
-            Note noteCreate = noteService.createNote(noteMapper.toNote(noteToCreate));
+            Note noteCreate = noteService.createNote(noteMapper.toNote(noteToCreate), patientId);
             return new ResponseEntity<>(noteMapper.fromNote(noteCreate), HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
