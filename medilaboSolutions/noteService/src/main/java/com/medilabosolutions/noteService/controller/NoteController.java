@@ -4,6 +4,7 @@ import com.medilabosolutions.noteService.controller.dtos.NoteDto;
 import com.medilabosolutions.noteService.controller.dtos.NoteToCreateDto;
 import com.medilabosolutions.noteService.mapper.NoteMapper;
 import com.medilabosolutions.noteService.model.Note;
+import com.medilabosolutions.noteService.repository.NoteRepository;
 import com.medilabosolutions.noteService.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ public class NoteController {
 
     @Autowired
     NoteMapper noteMapper;
+
+    @Autowired
+    NoteRepository noteRepository;
 
     @GetMapping("/{patientId}")
     public ResponseEntity<List<NoteDto>> getNotesByPatientId(@PathVariable long patientId) {

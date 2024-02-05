@@ -125,4 +125,18 @@ public class NoteIntegrationTest {
         List<Note> noteList = mongoTemplate.findAll(Note.class);
         assertEquals(3,noteList.size());
     }
+
+    @Test
+    void createNoteByPatientIdWithIncorrectPatientShouldNotReturnTheNoteTest() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(loadJson("CreateOneOfTheNoteByPatientId.json")))
+                .uri(URI.create("http://localhost:" + port + "/notes/" + 2))
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> result = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(result.statusCode(), 500);
+        List<Note> noteList = mongoTemplate.findAll(Note.class);
+        assertEquals(3,noteList.size());
+    }
 }
