@@ -31,7 +31,7 @@ public class ClientControllerTest {
     @Test
     void shouldDisplayUpdatePatientViewTest() throws Exception {
         this.mockMvc
-                .perform(get("/patients/1"))
+                .perform(get("/patients/1/details"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("updatePatient"))
                 .andExpect(model().attributeExists("patient"));
@@ -40,7 +40,7 @@ public class ClientControllerTest {
     @Test
     void shouldDenyUpdateNonExistentPatientViewTest() throws Exception {
         this.mockMvc
-                .perform(get("/patients/5"))
+                .perform(get("/patients/5/details"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error"))
                 .andExpect(model().attributeExists("errorMessage"));
@@ -56,7 +56,7 @@ public class ClientControllerTest {
                         .param("birthdate", LocalDate.now().toString())
                         .param("gender","F"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/patients?success"));
+                .andExpect(view().name("redirect:/patients/{id}?successUpdate"));
     }
 
     @Test

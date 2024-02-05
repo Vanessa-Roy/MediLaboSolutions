@@ -4,22 +4,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
+import com.medilabosolutions.clientService.controller.dtos.NoteDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PatientMapper {
-    
+public class NoteMapper {
+
     private final ObjectMapper mapper;
 
-    public PatientMapper() {
+    public NoteMapper() {
         mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
     }
 
-    public List<PatientDTO> toListPatient(String bodyResponse) throws JsonProcessingException {
+    public List<NoteDto> toListNote(String bodyResponse) throws JsonProcessingException {
         if(bodyResponse.isEmpty()) {
             return null;
         } else {
@@ -27,19 +27,11 @@ public class PatientMapper {
         }
     }
 
-    public PatientDTO fromStringToPatient(String bodyResponse) throws JsonProcessingException {
-        if(bodyResponse.isEmpty()) {
+    public String fromNoteToString(NoteDto note) throws JsonProcessingException {
+        if(note == null) {
             return null;
         } else {
-            return mapper.readValue(bodyResponse, new TypeReference<>() {});
-        }
-    }
-
-    public String fromPatientToString(PatientDTO patient) throws JsonProcessingException {
-        if(patient == null) {
-            return null;
-        } else {
-            return mapper.writeValueAsString(patient);
+            return mapper.writeValueAsString(note);
         }
     }
 }

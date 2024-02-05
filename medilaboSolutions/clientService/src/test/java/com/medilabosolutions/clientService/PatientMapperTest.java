@@ -38,7 +38,7 @@ public class PatientMapperTest {
 
         Resource dataPatientList = new ClassPathResource("PatientCases.json");
         patientListJson = Files.readString(dataPatientList.getFile().toPath());
-        patientList = objectMapper.readValue(patientListJson, new TypeReference<List<PatientDTO>>() {
+        patientList = objectMapper.readValue(patientListJson, new TypeReference<>() {
         });
 
         Resource dataPatient = new ClassPathResource("OneOfThePatientCases.json");
@@ -56,14 +56,14 @@ public class PatientMapperTest {
 
     @Test
     public void toPatientWithAJsonShouldReturnPatientTest() throws JsonProcessingException {
-        PatientDTO result = patientMapper.toPatient(patientJson);
+        PatientDTO result = patientMapper.fromStringToPatient(patientJson);
         assertNotNull(result);
         assertEquals(patient, result);
     }
 
     @Test
     public void fromPatientWithAPatientShouldReturnJsonTest() throws JsonProcessingException {
-        String result = patientMapper.fromPatient(patient);
+        String result = patientMapper.fromPatientToString(patient);
         assertNotNull(result);
         assertEquals(patientJson, result);
     }
@@ -74,11 +74,11 @@ public class PatientMapperTest {
 
     @Test
     public void toPatientWithAnEmptyJsonShouldReturnNullTest() throws JsonProcessingException {
-        assertNull(patientMapper.toPatient(""));
+        assertNull(patientMapper.fromStringToPatient(""));
     }
 
     @Test
     public void fromPatientWithANullPatientShouldReturnNullTest() throws JsonProcessingException {
-        assertNull(patientMapper.fromPatient(null));
+        assertNull(patientMapper.fromPatientToString(null));
     }
 }
