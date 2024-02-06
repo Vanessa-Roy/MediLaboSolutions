@@ -7,9 +7,16 @@ import java.time.LocalDate;
 public class NoteDto {
     public String id;
     public long patientId;
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate date;
     public String content;
+
+    public NoteDto() {
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
 
     public NoteDto(String id, long patientId, LocalDate date, String content) {
         this.id = id;

@@ -15,6 +15,10 @@ public class AssessmentController {
     AssessmentService assessmentService;
     @GetMapping("/assessment/{patientId}")
     public ResponseEntity<Assessment> getAssessment(@PathVariable long patientId) {
-        return ResponseEntity.ok(assessmentService.getAssessment(patientId));
+        try {
+            return ResponseEntity.ok(assessmentService.getAssessment(patientId));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/patients")
@@ -46,7 +47,7 @@ public class ClientController {
             return "patientDetails";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "error";
+            return "patientDetails";
         }
     }
 
@@ -97,6 +98,13 @@ public class ClientController {
             }
             if (content == null) {
                 throw new Exception ("Content is null");
+            }
+            if (!Pattern.matches("^.*[A-Za-z].*$", content)) {
+                model.addAttribute("errorMessage", "content must contains letters");
+                PatientDTO patient = clientService.getPatientById(patientId);
+                model.addAttribute("patient", patient);
+                model.addAttribute("localDate", LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                return "addNote";
             }
             NoteDto noteToCreate = new NoteDto(patientId, date, content);
             clientService.addNoteToPatient(noteToCreate);

@@ -48,7 +48,7 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(200, response.statusCode());
+        checkIfStatusExpected(200, response.statusCode(), "patients");
         checkIfBody(response.body());
         return patientMapper.toListPatient(response.body());
     };
@@ -61,7 +61,7 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(200, response.statusCode());
+        checkIfStatusExpected(200, response.statusCode(), "patient");
         checkIfBody(response.body());
         return patientMapper.fromStringToPatient(response.body());
     }
@@ -75,7 +75,7 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Content-Type", "application/json")
                 .header("Authorization", getAuthorizationValue())
                 .build();
-        checkIfStatusExpected(200, client.send(request, HttpResponse.BodyHandlers.ofString()).statusCode());
+        checkIfStatusExpected(200, client.send(request, HttpResponse.BodyHandlers.ofString()).statusCode(), "updating patient");
     }
 
     @Override
@@ -86,7 +86,7 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(200, response.statusCode());
+        checkIfStatusExpected(200, response.statusCode(), "note");
         checkIfBody(response.body());
         return noteMapper.toListNote(response.body());
     }
@@ -101,7 +101,7 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(201, response.statusCode());
+        checkIfStatusExpected(201, response.statusCode(), "adding a note");
         checkIfBody(response.body());
     }
 
@@ -113,19 +113,19 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(200, response.statusCode());
+        checkIfStatusExpected(200, response.statusCode(), "assessment");
         checkIfBody(response.body());
         return assessmentMapper.fromStringToAssessment(response.body());
     }
 
-    private void checkIfStatusExpected(int statusExpected, int status) throws Exception {
+    private void checkIfStatusExpected(int statusExpected, int status, String request) throws Exception {
         if (status != statusExpected) {
             if (status == 401) {
                 throw new Exception("You don't have the authorization");
             } else if (status == 400) {
                 throw new Exception("Bad request");
             } else {
-                throw new Exception("An error occurred");
+                throw new Exception("An error occurred during the request of the " + request);
             }
         }
     }
