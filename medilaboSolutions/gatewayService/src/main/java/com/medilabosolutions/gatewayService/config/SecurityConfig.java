@@ -1,5 +1,6 @@
 package com.medilabosolutions.gatewayService.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -16,6 +17,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
+    @Value("${user.username}")
+    String username;
+
+    @Value("${user.password}")
+    String password;
+
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -24,8 +31,8 @@ public class SecurityConfig {
     @Bean
     public MapReactiveUserDetailsService userDetailsService() {
         UserDetails user = User
-                .withUsername("user")
-                .password(passwordEncoder().encode("3f8ea724-380d-4cef-85e2-34f6297f0fec"))
+                .withUsername(username)
+                .password(passwordEncoder().encode(password))
                 .build();
         return new MapReactiveUserDetailsService(user);
     }

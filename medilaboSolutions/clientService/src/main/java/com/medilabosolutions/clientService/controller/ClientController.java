@@ -2,6 +2,7 @@ package com.medilabosolutions.clientService.controller;
 
 import com.medilabosolutions.clientService.controller.dtos.NoteDto;
 import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
+import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
 import com.medilabosolutions.clientService.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,8 @@ public class ClientController {
             model.addAttribute("patient", patient);
             List<NoteDto> noteList = clientService.getNotesByPatientId(id);
             model.addAttribute("noteList", noteList);
+            Assessment assessment = clientService.getAssessment(id);
+            model.addAttribute("assessment", assessment);
             return "patientDetails";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());

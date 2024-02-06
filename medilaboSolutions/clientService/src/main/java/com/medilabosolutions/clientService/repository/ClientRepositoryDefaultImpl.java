@@ -2,6 +2,8 @@ package com.medilabosolutions.clientService.repository;
 
 import com.medilabosolutions.clientService.controller.dtos.NoteDto;
 import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
+import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
+import com.medilabosolutions.clientService.mapper.AssessmentMapper;
 import com.medilabosolutions.clientService.mapper.NoteMapper;
 import com.medilabosolutions.clientService.mapper.PatientMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
 
     @Autowired
     private NoteMapper noteMapper;
+
+    @Autowired
+    private AssessmentMapper assessmentMapper;
 
     private final HttpClient client = HttpClient.newHttpClient();
 
@@ -98,6 +103,19 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         checkIfStatusExpected(201, response.statusCode());
         checkIfBody(response.body());
+    }
+
+    @Override
+    public Assessment getAssessment(Long id) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(new URI(gatewayUrl + "/assessment/" + id))
+                .header("Authorization", getAuthorizationValue())
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        checkIfStatusExpected(200, response.statusCode());
+        checkIfBody(response.body());
+        return assessmentMapper.fromStringToAssessment(response.body());
     }
 
     private void checkIfStatusExpected(int statusExpected, int status) throws Exception {

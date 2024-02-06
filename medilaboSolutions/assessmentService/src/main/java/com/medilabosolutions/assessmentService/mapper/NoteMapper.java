@@ -26,12 +26,4 @@ public class NoteMapper {
             return mapper.readValue(bodyResponse, new TypeReference<>() {});
         }
     }
-
-    public String fromNoteToString(NoteDto note) throws JsonProcessingException {
-        if(note == null) {
-            return null;
-        } else {
-            return mapper.writeValueAsString(note);
-        }
-    }
 }
