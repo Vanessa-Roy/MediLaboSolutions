@@ -4,7 +4,7 @@ public enum Trigger {
     // or create a class Trigger with a static attribute as a List<String>
     HEMOGLOBINA1C("HEMOGLOBIN A1C"),
     MICROALBUMIN("MICROALBUMIN"),
-    HEIGHT("HEIGTH"),
+    HEIGHT("HEIGHT"),
     WEIGHT("WEIGHT"),
     SMOKER("SMOK"),
     ABNORMAL("ABNORMAL"),

@@ -43,8 +43,7 @@ public class AssessmentRepositoryDefaultImpl implements AssessmentRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(200, response.statusCode());
-        checkIfBody(response.body());
+        checkIfStatusExpected(response.statusCode());
         return patientMapper.fromStringToPatient(response.body());
     }
 
@@ -56,26 +55,17 @@ public class AssessmentRepositoryDefaultImpl implements AssessmentRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(200, response.statusCode());
-        checkIfBody(response.body());
+        checkIfStatusExpected(response.statusCode());
         return noteMapper.toListNote(response.body());
     }
 
-    private void checkIfStatusExpected(int statusExpected, int status) throws Exception {
-        if (status != statusExpected) {
+    private void checkIfStatusExpected(int status) throws Exception {
+        if (status != 200) {
             if (status == 401) {
                 throw new Exception("You don't have the authorization");
-            } else if (status == 400) {
-                throw new Exception("Bad request");
             } else {
                 throw new Exception("An error occurred");
             }
-        }
-    }
-
-    public void checkIfBody(String response) throws Exception {
-        if (response.isEmpty()) {
-            throw new Exception("No body found");
         }
     }
 

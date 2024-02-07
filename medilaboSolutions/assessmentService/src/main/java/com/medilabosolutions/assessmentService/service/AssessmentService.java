@@ -41,11 +41,14 @@ public class AssessmentService {
     }
 
 
-    private int getAgePatient(LocalDate birthdate) {
+    public int getAgePatient(LocalDate birthdate) throws Exception {
+        if (birthdate.isAfter(LocalDate.now())) {
+            throw new Exception("the date must be into the past");
+        }
         return Period.between(birthdate, LocalDate.now()).getYears();
     }
 
-    private PatientDTO getPatientById(long id) throws Exception {
+    public PatientDTO getPatientById(long id) throws Exception {
         try {
             return assessmentRepository.getPatientById(id);
         } catch (Exception e) {
@@ -53,7 +56,7 @@ public class AssessmentService {
         }
     }
 
-    private List<NoteDto> getNotesByPatient(long id) throws Exception {
+    public List<NoteDto> getNotesByPatient(long id) throws Exception {
         try {
             return assessmentRepository.getNotesByPatientId(id);
         } catch (Exception e) {
@@ -61,30 +64,33 @@ public class AssessmentService {
         }
     }
 
-    private long getNumberOfTriggerByPatient(List<NoteDto> noteList) {
+    public long getNumberOfTriggerByPatient(List<NoteDto> noteList) throws Exception {
+        if (noteList == null) {
+            throw new Exception("NoteList is null");
+        }
         return Arrays.stream(Trigger.values()).map(Trigger::getDescription)
                 .filter(trigger -> noteList.stream().anyMatch(note -> note.content.toUpperCase().contains(trigger)))
                 .count();
     }
 
-    private boolean isBorderlineAssessment(int trigger, int patientAge) {
-        return patientAge > 30 && 2 <= trigger && trigger <= 5;
+    public boolean isBorderlineAssessment(int trigger, int patientAge) {
+        return patientAge > 30 && trigger >= 2;
     }
 
-    private boolean isInDangerAssessment(int trigger, int patientAge, Gender genderPatient) {
+    public boolean isInDangerAssessment(int trigger, int patientAge, Gender genderPatient) {
         if ( patientAge <= 30 && genderPatient.equals(Gender.F) && trigger >= 4 ) {
             return true;
         }
         if ( patientAge <= 30 && genderPatient.equals(Gender.M) && trigger >= 3 ) {
             return true;
         }
-        if ( patientAge > 30 && 6 <= trigger && trigger <= 7 ) {
+        if ( patientAge > 30 && trigger >= 6 ) {
             return true;
         }
         return false;
     }
 
-    private boolean isEarlyOnset(int trigger, int patientAge, Gender genderPatient) {
+    public boolean isEarlyOnset(int trigger, int patientAge, Gender genderPatient) {
         if ( patientAge <= 30 && genderPatient.equals(Gender.F) && trigger >= 7 ) {
             return true;
         }

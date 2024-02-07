@@ -18,4 +18,17 @@ public class PatientDTO {
     private Gender gender;
     private String address;
     private String phone;
+
+    public PatientDTO(Long id, String firstname, String lastname, LocalDate birthdate, Gender gender, String address, String phone) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
+        this.gender = gender;
+        this.address = address;
+        this.phone = phone;
+    }
+
+    public PatientDTO() {
+    }
 }
