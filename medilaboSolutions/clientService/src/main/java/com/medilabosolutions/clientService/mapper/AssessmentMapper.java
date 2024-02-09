@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 public class AssessmentMapper {
     private final ObjectMapper mapper;
 
-    public AssessmentMapper(ObjectMapper mapper) {
-        this.mapper = mapper;
+    public AssessmentMapper() {
+        mapper = new ObjectMapper();
     }
 
     public Assessment fromStringToAssessment(String bodyResponse) throws JsonProcessingException {

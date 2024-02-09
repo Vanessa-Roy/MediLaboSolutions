@@ -7,9 +7,11 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+
 @Getter
 @Setter
 public class PatientDTO {
+
     private Long id;
     private String firstname;
     private String lastname;

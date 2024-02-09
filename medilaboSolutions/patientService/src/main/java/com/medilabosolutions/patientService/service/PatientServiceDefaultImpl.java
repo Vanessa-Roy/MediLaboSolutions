@@ -20,7 +20,7 @@ public class PatientServiceDefaultImpl implements PatientService {
 
     @Override
     public Patient getPatientById(Long id) {
-        return patientRepository.findById(id).orElse(null);
+        return patientRepository.findById(id).orElseThrow(NullPointerException::new);
     }
 
     @Override

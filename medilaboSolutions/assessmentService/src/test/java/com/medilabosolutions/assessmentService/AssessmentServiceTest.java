@@ -206,7 +206,7 @@ public class AssessmentServiceTest {
     @Test
     public void getAssessmentWith8TriggersAndCorrectPatientIdShouldReturnTheAssessmentIsEarlyOnset() throws Exception {
         when(assessmentRepository.getPatientById(1L)).thenReturn(patientTest);
-        noteTest.content = "reaction, cholesterol, smoker, weight, height, relapse, abnormal, dizziness";
+        noteTest.setContent("reaction, cholesterol, smoker, weight, height, relapse, abnormal, dizziness");
         when(assessmentRepository.getNotesByPatientId(1L)).thenReturn(noteListTest);
 
         assertEquals(Assessment.EARLY_ONSET, assessmentService.getAssessment(1L));
@@ -218,7 +218,7 @@ public class AssessmentServiceTest {
     @Test
     public void getAssessmentWith4TriggersAndCorrectPatientIdShouldReturnTheAssessmentIsInDanger() throws Exception {
         when(assessmentRepository.getPatientById(1L)).thenReturn(patientTest);
-        noteTest.content = "reaction, cholesterol, smoker, weight, height, relapse";
+        noteTest.setContent("reaction, cholesterol, smoker, weight, height, relapse");
         when(assessmentRepository.getNotesByPatientId(1L)).thenReturn(noteListTest);
 
         assertEquals(Assessment.IN_DANGER, assessmentService.getAssessment(1L));
@@ -230,7 +230,7 @@ public class AssessmentServiceTest {
     @Test
     public void getAssessmentWith2TriggersAndCorrectPatientIdShouldReturnTheAssessmentBorderline() throws Exception {
         when(assessmentRepository.getPatientById(1L)).thenReturn(patientTest);
-        noteTest.content = "reaction, cholesterol";
+        noteTest.setContent("reaction, cholesterol");
         when(assessmentRepository.getNotesByPatientId(1L)).thenReturn(noteListTest);
 
         assertEquals(Assessment.BORDERLINE, assessmentService.getAssessment(1L));

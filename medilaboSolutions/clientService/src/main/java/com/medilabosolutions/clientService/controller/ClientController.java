@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.NotAcceptableStatusException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -45,6 +46,9 @@ public class ClientController {
             Assessment assessment = clientService.getAssessment(id);
             model.addAttribute("assessment", assessment);
             return "patientDetails";
+        } catch (NotAcceptableStatusException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "patientDetails";
@@ -93,20 +97,17 @@ public class ClientController {
     @PostMapping("/{id}/notes")
     public String addNoteToPatient(@PathVariable (name = "id") Long patientId, String content, LocalDate date, Model model) {
         try {
+            PatientDTO currentPatient = clientService.getPatientById(patientId);
             if (date == null) {
                 date = LocalDate.now();
             }
-            if (content == null) {
-                throw new Exception ("Content is null");
-            }
-            if (!Pattern.matches("^.*[A-Za-z].*$", content)) {
+            if (content == null || !Pattern.matches("^.*[A-Za-z].*$", content)) {
                 model.addAttribute("errorMessage", "content must contains letters");
-                PatientDTO patient = clientService.getPatientById(patientId);
-                model.addAttribute("patient", patient);
+                model.addAttribute("patient", currentPatient);
                 model.addAttribute("localDate", LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 return "addNote";
             }
-            NoteDto noteToCreate = new NoteDto(patientId, date, content);
+            NoteDto noteToCreate = new NoteDto(currentPatient.getId(), date, content);
             clientService.addNoteToPatient(noteToCreate);
             return "redirect:/patients/{id}?successNote";
         } catch (Exception e) {

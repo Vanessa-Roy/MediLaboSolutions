@@ -3,7 +3,9 @@ package com.medilabosolutions.clientService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.medilabosolutions.clientService.controller.dtos.NoteDto;
 import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
+import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
 import com.medilabosolutions.clientService.repository.ClientRepository;
 import com.medilabosolutions.clientService.service.ClientService;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,6 +20,8 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,6 +44,12 @@ public class ClientServiceTest {
 
     private static PatientDTO updatePatient;
 
+    private static List<NoteDto> noteList;
+
+    private static NoteDto noteToAdd;
+
+    private static Assessment assessment;
+
     @BeforeAll
     public static void setUp() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -57,6 +67,14 @@ public class ClientServiceTest {
         Resource dataUpdatePatient = new ClassPathResource("UpdateOneOfThePatientCases.json");
         String updatePatientJson = Files.readString(dataUpdatePatient.getFile().toPath());
         updatePatient = objectMapper.readValue(updatePatientJson, PatientDTO.class);
+
+        Resource dataNote = new ClassPathResource("NotesOfPatientCases.json");
+        String dataNoteJson = Files.readString(dataNote.getFile().toPath());
+        noteList = Collections.singletonList(objectMapper.readValue(dataNoteJson, NoteDto.class));
+
+        noteToAdd = new NoteDto("note1", 1L, LocalDate.now(), "content test");
+
+        assessment = Assessment.NONE;
     }
 
     @Test
@@ -85,5 +103,32 @@ public class ClientServiceTest {
 
         verify(clientRepository, Mockito.times(1)).getPatientById(anyLong());
         verify(clientRepository, Mockito.times(1)).updatePatient(updatePatient);
+    }
+
+    @Test
+    public void getNotesByPatientIdShouldCallClientRepositoryAndReturnListOfNoteTest() throws Exception {
+        when(clientRepository.getNotesByPatientId(anyLong())).thenReturn(noteList);
+
+        List<NoteDto> result = clientService.getNotesByPatientId(anyLong());
+
+        verify(clientRepository, Mockito.times(1)).getNotesByPatientId(anyLong());
+        assertEquals(noteList, result);
+    }
+
+    @Test
+    public void addNoteToPatientShouldCallClientRepositoryTest() throws Exception {
+        clientService.addNoteToPatient(noteToAdd);
+
+        verify(clientRepository, Mockito.times(1)).addNoteToPatient(noteToAdd);
+    }
+
+    @Test
+    public void getAssessmentByPatientIdShouldCallClientRepositoryAndReturnAssessmentTest() throws Exception {
+        when(clientRepository.getAssessment(anyLong())).thenReturn(assessment);
+
+        Assessment result = clientService.getAssessment(anyLong());
+
+        verify(clientRepository, Mockito.times(1)).getAssessment(anyLong());
+        assertEquals(assessment, result);
     }
 }

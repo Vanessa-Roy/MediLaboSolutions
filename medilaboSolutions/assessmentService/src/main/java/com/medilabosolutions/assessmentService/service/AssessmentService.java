@@ -69,7 +69,7 @@ public class AssessmentService {
             throw new Exception("NoteList is null");
         }
         return Arrays.stream(Trigger.values()).map(Trigger::getDescription)
-                .filter(trigger -> noteList.stream().anyMatch(note -> note.content.toUpperCase().contains(trigger)))
+                .filter(trigger -> noteList.stream().anyMatch(note -> note.getContent().toUpperCase().contains(trigger)))
                 .count();
     }
 
