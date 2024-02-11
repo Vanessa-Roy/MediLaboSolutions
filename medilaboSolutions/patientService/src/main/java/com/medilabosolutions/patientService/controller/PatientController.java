@@ -32,13 +32,21 @@ public class PatientController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/patients")
-    public List<PatientDTO> getPatients() {
-        return patientService.getPatients().stream().map(patientMapper::from).toList();
+    public ResponseEntity<List<PatientDTO>> getPatients() {
+        try {
+            return ResponseEntity.ok(patientService.getPatients().stream().map(patientMapper::from).toList());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/patients/{id}")
-    public PatientDTO getPatientById(@PathVariable Long id) {
-        return patientMapper.from(patientService.getPatientById(id));
+    public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(patientMapper.from(patientService.getPatientById(id)));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @PutMapping("/patients/{id}")
@@ -49,8 +57,5 @@ public class PatientController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
     }
-
-
 }

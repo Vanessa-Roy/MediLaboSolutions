@@ -29,6 +29,7 @@ import java.nio.file.Files;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -92,6 +93,13 @@ public class PatientIntegrationTest {
 
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId ,
                 String.class)).contains(loadJson("OneOfThePatientCases.json"));
+    }
+
+    @Test
+    void getPatientNotExistentShouldReturnAnExceptionTest() {
+
+        assertNull(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + 5 ,
+                String.class));
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.medilabosolutions.clientService.repository;
 
 import com.medilabosolutions.clientService.controller.dtos.NoteDto;
 import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
+import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface ClientRepository {
     List<NoteDto> getNotesByPatientId(long patientId) throws Exception;
 
     void addNoteToPatient(NoteDto note) throws Exception;
+
+    Assessment getAssessment(Long id) throws Exception;
 }

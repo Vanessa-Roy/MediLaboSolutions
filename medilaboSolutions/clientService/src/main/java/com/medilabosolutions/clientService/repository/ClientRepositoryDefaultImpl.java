@@ -2,11 +2,14 @@ package com.medilabosolutions.clientService.repository;
 
 import com.medilabosolutions.clientService.controller.dtos.NoteDto;
 import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
+import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
+import com.medilabosolutions.clientService.mapper.AssessmentMapper;
 import com.medilabosolutions.clientService.mapper.NoteMapper;
 import com.medilabosolutions.clientService.mapper.PatientMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.NotAcceptableStatusException;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -27,11 +30,13 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
     @Value("${user.password}")
     private String userPassword;
 
-    @Autowired
-    private PatientMapper patientMapper;
+    private PatientMapper patientMapper = new PatientMapper();
 
     @Autowired
     private NoteMapper noteMapper;
+
+    @Autowired
+    private AssessmentMapper assessmentMapper;
 
     private final HttpClient client = HttpClient.newHttpClient();
 
@@ -43,8 +48,7 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(200, response.statusCode());
-        checkIfBody(response.body());
+        checkIfStatusExpected(200, response.statusCode(), "patients");
         return patientMapper.toListPatient(response.body());
     };
 
@@ -56,8 +60,7 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(200, response.statusCode());
-        checkIfBody(response.body());
+        checkIfStatusExpected(200, response.statusCode(), "patient");
         return patientMapper.fromStringToPatient(response.body());
     }
 
@@ -70,7 +73,7 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Content-Type", "application/json")
                 .header("Authorization", getAuthorizationValue())
                 .build();
-        checkIfStatusExpected(200, client.send(request, HttpResponse.BodyHandlers.ofString()).statusCode());
+        checkIfStatusExpected(200, client.send(request, HttpResponse.BodyHandlers.ofString()).statusCode(), "updating patient");
     }
 
     @Override
@@ -81,8 +84,7 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(200, response.statusCode());
-        checkIfBody(response.body());
+        checkIfStatusExpected(200, response.statusCode(), "note");
         return noteMapper.toListNote(response.body());
     }
 
@@ -91,34 +93,39 @@ public class ClientRepositoryDefaultImpl implements ClientRepository {
         String requestBody = noteMapper.fromNoteToString(note);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(new URI(gatewayUrl + "/notes/" + note.patientId))
+                .uri(new URI(gatewayUrl + "/notes/" + note.getPatientId()))
                 .header("Content-Type", "application/json")
                 .header("Authorization", getAuthorizationValue())
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        checkIfStatusExpected(201, response.statusCode());
-        checkIfBody(response.body());
+        checkIfStatusExpected(201, response.statusCode(), "adding a note");
     }
 
-    private void checkIfStatusExpected(int statusExpected, int status) throws Exception {
+    @Override
+    public Assessment getAssessment(Long id) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(new URI(gatewayUrl + "/assessment/" + id))
+                .header("Authorization", getAuthorizationValue())
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        checkIfStatusExpected(200, response.statusCode(), "assessment");
+        return assessmentMapper.fromStringToAssessment(response.body());
+    }
+
+    private void checkIfStatusExpected(int statusExpected, int status, String request) throws Exception {
         if (status != statusExpected) {
             if (status == 401) {
-                throw new Exception("You don't have the authorization");
-            } else if (status == 400) {
-                throw new Exception("Bad request");
+                throw new NotAcceptableStatusException("You don't have the authorization");
+            } else if (status == 404) {
+                throw new NotAcceptableStatusException("Element not found");
             } else {
-                throw new Exception("An error occurred");
+                throw new Exception("An error occurred during the request of the " + request);
             }
         }
     }
 
-    public void checkIfBody(String response) throws Exception {
-        if (response.isEmpty()) {
-            throw new Exception("No body found");
-        }
-    }
-
-    private String getAuthorizationValue() {
+    public String getAuthorizationValue() {
         return "Basic " + Base64.getEncoder().encodeToString((username + ":" + userPassword).getBytes());
     }
 

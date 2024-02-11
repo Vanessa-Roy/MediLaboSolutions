@@ -29,33 +29,56 @@
     </div>
   <div class="card">
     <div class="card-header d-flex justify-content-between">
-      <h4>Patient's details</h4>
+      <h4>Patient's Details</h4>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <a th:href="@{/patients}" class="btn btn-outline-secondary" >GO BACK TO THE LIST 🔙</a>
         <a th:href="@{/patients/{id}/details(id=${patient.id})}" class="btn btn-outline-secondary text-end" >UPDATE THE PATIENT</a>
       </div>
     </div>
     <div class="card-body">
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Lastname</th>
-            <th>Firstname</th>
-            <th>Birthdate</th>
-            <th>Gender</th>
-            <th>Address</th>
-            <th>Phone</th>
-          </tr>
-          <tr class="align-baseline" th:each="p:${patient}">
-            <td th:text="${p.lastname}"></td>
-            <td th:text="${p.firstname}"></td>
-            <td th:text="${p.birthdate}"></td>
-            <td th:text="${p.gender}"></td>
-            <td th:text="${p.address}"></td>
-            <td th:text="${p.phone}"></td>
-          </tr>
-          </thead>
-        </table>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Lastname</th>
+          <th>Firstname</th>
+          <th>Birthdate</th>
+          <th>Gender</th>
+          <th>Address</th>
+          <th>Phone</th>
+        </tr>
+        <tr class="align-baseline" th:each="p:${patient}">
+          <td th:text="${p.lastname}"></td>
+          <td th:text="${p.firstname}"></td>
+          <td th:text="${p.birthdate}"></td>
+          <td th:text="${p.gender}"></td>
+          <td th:text="${p.address}"></td>
+          <td th:unless="${p.phone} == null">
+            <span th:if="${p.phone.length} >= 10" th:text="${p.getPhoneFormat()}"></span>
+            <span th:if="${p.phone.length} == 0"></span>
+          </td>
+          <td th:if="${p.phone} == null"></td>
+        </tr>
+        </thead>
+      </table>
+      <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+          Patient's Risk For Diabetes
+        </div>
+        <div class="card-body" th:switch="${assessment}">
+          <span th:case="${T(com.medilabosolutions.clientService.controller.dtos.enums.Assessment).NONE}"
+                th:text="${assessment}"
+                class="btn btn-success disabled"></span>
+          <span th:case="${T(com.medilabosolutions.clientService.controller.dtos.enums.Assessment).BORDERLINE}"
+                th:text="${assessment}"
+                class="btn btn-outline-warning disabled"></span>
+          <span th:case="${T(com.medilabosolutions.clientService.controller.dtos.enums.Assessment).IN_DANGER}"
+                th:text="${assessment}"
+                class="btn btn-warning disabled"></span>
+          <span th:case="${T(com.medilabosolutions.clientService.controller.dtos.enums.Assessment).EARLY_ONSET}"
+                th:text="${assessment}"
+                class="btn btn-danger disabled"></span>
+        </div>
+      </div>
       <div class="card">
         <div class="card-header d-flex justify-content-between">
           My Notes
