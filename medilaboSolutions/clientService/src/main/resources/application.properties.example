@@ -1,6 +1,0 @@
-gateway.url=http://localhost:8888
-
-user.username=user
-user.password=yourPassword
-
-server.port=8080

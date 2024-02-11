@@ -2,6 +2,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+env-patient-service.properties
+env-note-service.properties
+env-gateway-service.properties
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

@@ -1,7 +1,0 @@
-user.username = admin
-user.password = password
-user.dataBase = noteService
-
-spring.data.mongodb.uri=mongodb://admin:yourPassword@localhost:27017/noteService
-
-server.port=8082
