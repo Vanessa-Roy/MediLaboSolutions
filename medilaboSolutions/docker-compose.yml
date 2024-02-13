@@ -3,27 +3,27 @@ services:
     image: postgres
     container_name: patient-service-db
     env_file:
-      - ./patientService/.env.docker
+      - ./patient-service/.env.docker
     environment:
       POSTGRES_DB: patient-service
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
+      interval: 5s
       timeout: 3s
-      retries: 3
+      retries: 5
 
   patient-service:
-    build: ./patientService
+    build: ./patient-service
     container_name: patient-service
     env_file:
-      - ./patientService/.env.docker
+      - ./patient-service/.env.docker
     depends_on:
       patient-service-db:
         condition: service_healthy
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
-      interval: 10s
-      timeout: 10s
+      interval: 5s
+      timeout: 3s
       retries: 5
 
   note-service-db:
@@ -31,52 +31,52 @@ services:
     container_name: note-service-db
     command: mongod --auth
     env_file:
-      - ./noteService/.env.docker
+      - ./note-service/.env.docker
     volumes:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/note-service --quiet
-      interval: 10s
-      timeout: 10s
+      interval: 5s
+      timeout: 3s
       retries: 5
 
   note-service:
-    build: ./noteService
+    build: ./note-service
     container_name: note-service
     env_file:
-      - ./noteService/.env.docker
+      - ./note-service/.env.docker
     depends_on:
       note-service-db:
         condition: service_healthy
 
   gateway-service:
-    build: ./gatewayService
+    build: ./gateway-service
     container_name: gateway-service
     env_file:
-      - ./gatewayService/.env.docker
+      - ./gateway-service/.env.docker
     depends_on:
       patient-service:
         condition: service_healthy
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
-      interval: 10s
-      timeout: 10s
+      interval: 5s
+      timeout: 3s
       retries: 5
 
   assessment-service:
-    build: ./assessmentService
+    build: ./assessment-service
     container_name: assessment-service
     env_file:
-      - ./assessmentService/.env.docker
+      - ./assessment-service/.env.docker
     depends_on:
       gateway-service:
         condition: service_healthy
 
   client-service:
-    build: ./clientService
+    build: ./client-service
     container_name: client-service
     env_file:
-      - ./clientService/.env.docker
+      - ./client-service/.env.docker
     depends_on:
       gateway-service:
         condition: service_healthy
