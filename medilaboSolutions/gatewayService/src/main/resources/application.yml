@@ -5,23 +5,19 @@ spring:
     gateway:
       routes:
         - id : patients
-          uri: http://localhost:8081/
+          uri: http://patient-service:8081/
           predicates:
             - Path= /patients/**
         - id: notes
-          uri: http://localhost:8082/
+          uri: http://note-service:8082/
           predicates:
             - Path= /notes/**
         - id: assessment
-          uri: http://localhost:8083/
+          uri: http://assessment-service:8083/
           predicates:
             - Path= /assessment/**
-  config:
-    import: file:env-gateway-service.properties
-
 server:
   port: 8888
-
 user:
-  username: ${USER}
-  password: ${PASSWORD}
+  username: ${GATEWAY_USER}
+  password: ${GATEWAY_PASSWORD}

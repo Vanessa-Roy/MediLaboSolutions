@@ -39,3 +39,16 @@ services:
       - ./.env.docker
     volumes:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+
+  gateway-service:
+    build: ./gatewayService
+    container_name: gateway-service
+    env_file:
+      - ./.env.docker
+    ports:
+      - '8888:8888'
+    expose:
+      - '8888'
+    depends_on:
+      - note-service
+      - patient-service
