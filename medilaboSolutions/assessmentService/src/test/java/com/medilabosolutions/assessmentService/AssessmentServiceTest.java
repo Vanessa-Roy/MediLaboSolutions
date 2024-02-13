@@ -38,7 +38,7 @@ public class AssessmentServiceTest {
     @BeforeEach
     public void setUpPerTest() {
         patientTest = new PatientDTO(1L, "firstnameTest", "lastnameTest", LocalDate.now().minusYears(31), Gender.F, null, null);
-        noteTest = new NoteDto("note1",1L,LocalDate.now().minusMonths(1),"reaction");
+        noteTest = new NoteDto("note1",1L, LocalDate.now().minusMonths(1),"reaction");
         noteListTest = new ArrayList<>(List.of(noteTest));
     }
 
@@ -238,8 +238,4 @@ public class AssessmentServiceTest {
         verify(assessmentRepository, times(1)).getPatientById(1L);
         verify(assessmentRepository, times(1)).getNotesByPatientId(1L);
     }
-
-
-
-
 }

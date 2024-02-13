@@ -16,7 +16,7 @@ import java.util.Base64;
 import java.util.List;
 
 @Repository
-public class AssessmentRepositoryDefaultImpl implements AssessmentRepository {
+public class AssessmentRepositoryApiImpl implements AssessmentRepository {
 
     @Value("${gateway.url}")
     private String gatewayUrl;
@@ -59,7 +59,7 @@ public class AssessmentRepositoryDefaultImpl implements AssessmentRepository {
         return noteMapper.toListNote(response.body());
     }
 
-    private void checkIfStatusExpected(int status) throws Exception {
+    public void checkIfStatusExpected(int status) throws Exception {
         if (status != 200) {
             if (status == 401) {
                 throw new Exception("You don't have the authorization");
@@ -69,7 +69,7 @@ public class AssessmentRepositoryDefaultImpl implements AssessmentRepository {
         }
     }
 
-    private String getAuthorizationValue() {
+    public String getAuthorizationValue() {
         return "Basic " + Base64.getEncoder().encodeToString((username + ":" + userPassword).getBytes());
     }
 

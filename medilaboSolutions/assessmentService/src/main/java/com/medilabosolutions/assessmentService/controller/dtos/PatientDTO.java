@@ -2,13 +2,11 @@ package com.medilabosolutions.assessmentService.controller.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.medilabosolutions.assessmentService.controller.dtos.enums.Gender;
-import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
 
-@Getter
 @Setter
 public class PatientDTO {
 
@@ -32,5 +30,25 @@ public class PatientDTO {
     }
 
     public PatientDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public Gender getGender() {
+        return gender;
     }
 }

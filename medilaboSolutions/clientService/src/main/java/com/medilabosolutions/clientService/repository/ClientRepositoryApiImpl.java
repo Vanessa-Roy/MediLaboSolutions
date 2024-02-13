@@ -19,7 +19,7 @@ import java.util.Base64;
 import java.util.List;
 
 @Repository
-public class ClientRepositoryDefaultImpl implements ClientRepository {
+public class ClientRepositoryApiImpl implements ClientRepository {
 
     @Value("${gateway.url}")
     private String gatewayUrl;
