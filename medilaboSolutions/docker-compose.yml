@@ -1,0 +1,86 @@
+services:
+  patient-service-db:
+    image: postgres
+    container_name: patient-service-db
+    env_file:
+      - ./patient-service/.env.docker
+    environment:
+      POSTGRES_DB: patient-service
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  patient-service:
+    build: ./patient-service
+    container_name: patient-service
+    env_file:
+      - ./patient-service/.env.docker
+    depends_on:
+      patient-service-db:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  note-service-db:
+    image: mongo
+    container_name: note-service-db
+    command: mongod --auth
+    env_file:
+      - ./note-service/.env.docker
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/note-service --quiet
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  note-service:
+    build: ./note-service
+    container_name: note-service
+    env_file:
+      - ./note-service/.env.docker
+    depends_on:
+      note-service-db:
+        condition: service_healthy
+
+  gateway-service:
+    build: ./gateway-service
+    container_name: gateway-service
+    env_file:
+      - ./gateway-service/.env.docker
+    depends_on:
+      patient-service:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  assessment-service:
+    build: ./assessment-service
+    container_name: assessment-service
+    env_file:
+      - ./assessment-service/.env.docker
+    depends_on:
+      gateway-service:
+        condition: service_healthy
+
+  client-service:
+    build: ./client-service
+    container_name: client-service
+    env_file:
+      - ./client-service/.env.docker
+    depends_on:
+      gateway-service:
+        condition: service_healthy
+    ports:
+      - '8080:8080'
+    expose:
+      - '8080'

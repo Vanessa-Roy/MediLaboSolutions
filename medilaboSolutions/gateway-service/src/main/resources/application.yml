@@ -1,0 +1,23 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      routes:
+        - id : patients
+          uri: http://patient-service:8081/
+          predicates:
+            - Path= /patients/**
+        - id: notes
+          uri: http://note-service:8082/
+          predicates:
+            - Path= /notes/**
+        - id: assessment
+          uri: http://assessment-service:8083/
+          predicates:
+            - Path= /assessment/**
+server:
+  port: 8888
+user:
+  username: ${GATEWAY_USER}
+  password: ${GATEWAY_PASSWORD}
