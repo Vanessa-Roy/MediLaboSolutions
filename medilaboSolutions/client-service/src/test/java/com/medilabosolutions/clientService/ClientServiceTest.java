@@ -21,7 +21,6 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,9 +67,9 @@ public class ClientServiceTest {
         String updatePatientJson = Files.readString(dataUpdatePatient.getFile().toPath());
         updatePatient = objectMapper.readValue(updatePatientJson, PatientDTO.class);
 
-        Resource dataNote = new ClassPathResource("NotesOfPatientCases.json");
-        String dataNoteJson = Files.readString(dataNote.getFile().toPath());
-        noteList = Collections.singletonList(objectMapper.readValue(dataNoteJson, NoteDto.class));
+        Resource dataNoteList = new ClassPathResource("NoteList.json");
+        String noteListJson = Files.readString(dataNoteList.getFile().toPath());
+        noteList = objectMapper.readValue(noteListJson, new TypeReference<>() {});
 
         noteToAdd = new NoteDto("note1", 1L, LocalDate.now(), "content test");
 

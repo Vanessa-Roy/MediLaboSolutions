@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.medilabosolutions.clientService.controller.dtos.NoteDto;
 import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
+import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
 import com.medilabosolutions.clientService.mapper.AssessmentMapper;
 import com.medilabosolutions.clientService.mapper.NoteMapper;
 import com.medilabosolutions.clientService.mapper.PatientMapper;
@@ -37,6 +39,13 @@ public class ClientMapperTest {
 
     private static PatientDTO patient;
 
+    private static String noteListJson;
+
+    private static List<NoteDto> noteList;
+
+    private static NoteDto note;
+    private static String noteJson;
+
     @BeforeAll
     public static void setUp() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -50,6 +59,14 @@ public class ClientMapperTest {
         Resource dataPatient = new ClassPathResource("OneOfThePatientCases.json");
         patientJson = Files.readString(dataPatient.getFile().toPath());
         patient = objectMapper.readValue(patientJson, PatientDTO.class);
+
+        Resource dataNoteList = new ClassPathResource("NoteList.json");
+        noteListJson = Files.readString(dataNoteList.getFile().toPath());
+        noteList = objectMapper.readValue(noteListJson, new TypeReference<>() {});
+
+        Resource dataNote = new ClassPathResource("OneNote.json");
+        noteJson = Files.readString(dataNote.getFile().toPath());
+        note = objectMapper.readValue(noteJson, NoteDto.class);
 
     }
 
@@ -102,13 +119,40 @@ public class ClientMapperTest {
     }
 
     @Test
-    public void toNoteWithAnEmptyNoteDtoShouldReturnNullTest() throws JsonProcessingException {
+    public void toListNoteShouldReturnTheListOfNotesTest() throws JsonProcessingException {
+        List<NoteDto> result = noteMapper.toListNote(noteListJson);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        for ( int i = 0 ; i < patientList.size() ; i++ ) {
+            assertEquals(noteList.get(i).getId(), result.get(i).getId());
+            assertEquals(noteList.get(i).getContent(), result.get(i).getContent());
+            assertEquals(noteList.get(i).getPatientId(), result.get(i).getPatientId());
+            assertEquals(noteList.get(i).getDate(), result.get(i).getDate());
+        }
+    }
+
+    @Test
+    public void toListNoteWithAnEmptyStringShouldReturnNullTest() throws JsonProcessingException {
         assertNull(noteMapper.toListNote(""));
+    }
+
+    @Test
+    public void fromNoteWithANoteShouldReturnJsonTest() throws JsonProcessingException {
+        String result = noteMapper.fromNoteToString(note);
+        assertNotNull(result);
+        assertEquals(noteJson, result);
     }
 
     @Test
     public void fromNoteWithANullNoteShouldReturnNullTest() throws JsonProcessingException {
         assertNull(noteMapper.fromNoteToString(null));
+    }
+
+    @Test
+    public void fromAssessmentWithAssessmentBodyShouldReturnAssessmentTest() throws JsonProcessingException {
+        Assessment result = assessmentMapper.fromStringToAssessment("\"NONE\"");
+        assertNotNull(result);
+        assertEquals(Assessment.NONE, result);
     }
 
     @Test
