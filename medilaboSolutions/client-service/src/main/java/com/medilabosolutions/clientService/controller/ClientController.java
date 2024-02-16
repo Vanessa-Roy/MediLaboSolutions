@@ -15,7 +15,6 @@ import org.springframework.web.server.NotAcceptableStatusException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/patients")
@@ -101,7 +100,7 @@ public class ClientController {
             if (date == null) {
                 date = LocalDate.now();
             }
-            if (content == null || !Pattern.matches("^.*[A-Za-z].*$", content)) {
+            if (content == null || content.isBlank()) {
                 model.addAttribute("errorMessage", "content must contains letters");
                 model.addAttribute("patient", currentPatient);
                 model.addAttribute("localDate", LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));

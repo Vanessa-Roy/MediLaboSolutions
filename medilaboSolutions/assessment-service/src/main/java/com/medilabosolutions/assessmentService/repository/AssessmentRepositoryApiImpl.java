@@ -5,56 +5,33 @@ import com.medilabosolutions.assessmentService.controller.dtos.PatientDTO;
 import com.medilabosolutions.assessmentService.mapper.NoteMapper;
 import com.medilabosolutions.assessmentService.mapper.PatientMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.net.URI;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Base64;
 import java.util.List;
 
 @Repository
 public class AssessmentRepositoryApiImpl implements AssessmentRepository {
-
-    @Value("${gateway.url}")
-    private String gatewayUrl;
-
-    @Value("${user.username}")
-    private String username;
-
-    @Value("${user.password}")
-    private String userPassword;
-
+    @Autowired
+    ApiRequestBuilder apiRequestBuilder;
     @Autowired
     private PatientMapper patientMapper;
-
     @Autowired
     private NoteMapper noteMapper;
 
-    private final HttpClient client = HttpClient.newHttpClient();
-
     @Override
     public PatientDTO getPatientById(Long id) throws Exception {
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(new URI(gatewayUrl + "/patients/" + id))
-                .header("Authorization", getAuthorizationValue())
-                .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpRequest request = apiRequestBuilder.getRequest("/patients/" + id);
+        HttpResponse<String> response = apiRequestBuilder.getStringHttpResponse(request);
         checkIfStatusExpected(response.statusCode());
         return patientMapper.fromStringToPatient(response.body());
     }
 
     @Override
     public List<NoteDto> getNotesByPatientId(long patientId) throws Exception {
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(new URI(gatewayUrl + "/notes/" + patientId))
-                .header("Authorization", getAuthorizationValue())
-                .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpRequest request = apiRequestBuilder.getRequest("/notes/" + patientId);
+        HttpResponse<String> response = apiRequestBuilder.getStringHttpResponse(request);
         checkIfStatusExpected(response.statusCode());
         return noteMapper.toListNote(response.body());
     }
@@ -67,10 +44,6 @@ public class AssessmentRepositoryApiImpl implements AssessmentRepository {
                 throw new Exception("An error occurred");
             }
         }
-    }
-
-    public String getAuthorizationValue() {
-        return "Basic " + Base64.getEncoder().encodeToString((username + ":" + userPassword).getBytes());
     }
 
 }
