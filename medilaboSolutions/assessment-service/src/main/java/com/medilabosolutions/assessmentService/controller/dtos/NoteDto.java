@@ -6,6 +6,9 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 
+/**
+ * Represents a dto used to read a real note.
+ */
 @Setter
 public class NoteDto {
 
@@ -15,6 +18,14 @@ public class NoteDto {
     private LocalDate date;
     private String content;
 
+    /**
+     * Instantiates a new Note dto.
+     *
+     * @param id        the id
+     * @param patientId the patient id
+     * @param date      the date
+     * @param content   the content
+     */
     public NoteDto(String id, long patientId, LocalDate date, String content) {
         this.id = id;
         this.patientId = patientId;
@@ -22,9 +33,17 @@ public class NoteDto {
         this.content = content;
     }
 
+    /**
+     * Instantiates a new Note dto.
+     */
     public NoteDto() {
     }
 
+    /**
+     * Gets content.
+     *
+     * @return the content
+     */
     public String getContent() {
         return content;
     }

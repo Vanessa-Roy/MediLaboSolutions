@@ -10,6 +10,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a dto used to read or update a real patient.
+ */
 @Getter
 @Setter
 public class PatientDTO {
@@ -27,7 +30,12 @@ public class PatientDTO {
    @Pattern(regexp = "^|[0-9].{9,}$", message = "phone must contain 10 digits")
     private String phone;
 
-   @JsonIgnore
+    /**
+     * Gets phone format.
+     *
+     * @return the phone format
+     */
+    @JsonIgnore
     public String getPhoneFormat() {
         return phone.substring(0,3) + "-" + phone.substring(3,6) + "-" + phone.substring(6);
     }

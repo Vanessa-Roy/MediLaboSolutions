@@ -13,21 +13,41 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/**
+ * The Security configuration of the Gateway
+ *
+ */
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
+    /**
+     * The Username.
+     */
     @Value("${user.username}")
     String username;
 
+    /**
+     * The Password.
+     */
     @Value("${user.password}")
     String password;
 
+    /**
+     * Password encoder initialization.
+     *
+     * @return the password encoder
+     */
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Instantiates a new configured user details service
+     *
+     * @return the new user in memory who can call the gateway
+     */
     @Bean
     public MapReactiveUserDetailsService userDetailsService() {
         UserDetails user = User
@@ -37,6 +57,12 @@ public class SecurityConfig {
         return new MapReactiveUserDetailsService(user);
     }
 
+    /**
+     * Configuration of the security filter chain.
+     *
+     * @param http the http
+     * @return the security web filter chain
+     */
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.csrf(ServerHttpSecurity.CsrfSpec::disable)

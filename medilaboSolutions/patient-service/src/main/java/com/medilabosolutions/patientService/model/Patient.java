@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * Represent a patient
+ */
 @Entity
 @Table(name = "patients")
 @Getter

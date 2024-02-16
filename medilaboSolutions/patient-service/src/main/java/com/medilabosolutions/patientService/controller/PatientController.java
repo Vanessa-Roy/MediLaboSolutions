@@ -3,11 +3,6 @@ package com.medilabosolutions.patientService.controller;
 import com.medilabosolutions.patientService.controller.dtos.PatientDTO;
 import com.medilabosolutions.patientService.mapper.PatientMapper;
 import com.medilabosolutions.patientService.service.PatientService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Management of the requests though the controller.
+ */
 @RestController
 public class PatientController {
 
@@ -24,13 +22,11 @@ public class PatientController {
     @Autowired
     private PatientMapper patientMapper;
 
-    @Operation(summary = "Get all the patients")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the patients from the user",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = String.class))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
+    /**
+     * Gets patients.
+     *
+     * @return the patients
+     */
     @GetMapping("/patients")
     public ResponseEntity<List<PatientDTO>> getPatients() {
         try {
@@ -40,6 +36,12 @@ public class PatientController {
         }
     }
 
+    /**
+     * Gets patient by id.
+     *
+     * @param id the id
+     * @return the patient by id
+     */
     @GetMapping("/patients/{id}")
     public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id) {
         try {
@@ -49,6 +51,13 @@ public class PatientController {
         }
     }
 
+    /**
+     * Update a patient.
+     *
+     * @param patientDTO the patient dto
+     * @param id         the id
+     * @return the response entity
+     */
     @PutMapping("/patients/{id}")
     public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patientDTO, @PathVariable Long id) {
         try {

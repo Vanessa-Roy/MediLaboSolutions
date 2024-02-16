@@ -16,13 +16,25 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Management of the requests though the controller.
+ */
 @Controller
 @RequestMapping("/patients")
 public class ClientController {
 
+    /**
+     * The Client service.
+     */
     @Autowired
     ClientService clientService;
 
+    /**
+     * Gets patients.
+     *
+     * @param model the model
+     * @return the patients
+     */
     @GetMapping()
     public String getPatients(Model model) {
         try {
@@ -35,6 +47,13 @@ public class ClientController {
         }
     }
 
+    /**
+     * Gets patient details.
+     *
+     * @param id    the id
+     * @param model the model
+     * @return the patient details
+     */
     @GetMapping("/{id}")
     public String getPatientDetails(@PathVariable Long id, Model model) {
         try {
@@ -54,6 +73,13 @@ public class ClientController {
         }
     }
 
+    /**
+     * Gets the form to Update a patient.
+     *
+     * @param id    the id
+     * @param model the model
+     * @return the string
+     */
     @GetMapping("/{id}/details")
     public String updatePatient(@PathVariable Long id, Model model) {
         try {
@@ -66,6 +92,15 @@ public class ClientController {
         }
     }
 
+    /**
+     * Update a patient.
+     *
+     * @param id            the id
+     * @param patient       the patient
+     * @param bindingResult the binding result
+     * @param model         the model
+     * @return the string
+     */
     @PostMapping("/{id}")
     public String updatePatient(@PathVariable Long id, @Valid @ModelAttribute("patient") PatientDTO patient, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -80,6 +115,13 @@ public class ClientController {
         }
     }
 
+    /**
+     * Gets the form to add a note.
+     *
+     * @param id    the id
+     * @param model the model
+     * @return the add a note form
+     */
     @GetMapping("/{id}/notes")
     public String getAddANoteForm(@PathVariable Long id, Model model) {
         try {
@@ -93,6 +135,15 @@ public class ClientController {
         }
     }
 
+    /**
+     * Add note to patient.
+     *
+     * @param patientId the patient id
+     * @param content   the content
+     * @param date      the date
+     * @param model     the model
+     * @return the string
+     */
     @PostMapping("/{id}/notes")
     public String addNoteToPatient(@PathVariable (name = "id") Long patientId, String content, LocalDate date, Model model) {
         try {
