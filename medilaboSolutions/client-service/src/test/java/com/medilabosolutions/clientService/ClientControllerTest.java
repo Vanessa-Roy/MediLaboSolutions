@@ -239,7 +239,7 @@ public class ClientControllerTest {
     void postAddNoteToPatientWithIncorrectNoteShouldReturnTheTemplateAddNoteTest() throws Exception {
         when(clientService.getPatientById(1L)).thenReturn(patientDTO);
 
-        String result = clientController.addNoteToPatient(1L, String.valueOf(1234), LocalDate.now(), model);
+        String result = clientController.addNoteToPatient(1L, "   ", LocalDate.now(), model);
 
         verify(clientService, times(1)).getPatientById(1L);
         verify(clientService, never()).addNoteToPatient(any(NoteDto.class));
