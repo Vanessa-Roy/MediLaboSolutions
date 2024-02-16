@@ -52,7 +52,7 @@ public class ApiRequestBuilder {
         return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public String getAuthorizationValue() {
+    private String getAuthorizationValue() {
         return "Basic " + Base64.getEncoder().encodeToString((username + ":" + userPassword).getBytes());
     }
 }
