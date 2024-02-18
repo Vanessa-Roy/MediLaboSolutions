@@ -1,7 +1,7 @@
 package com.medilabosolutions.assessmentService.repository;
 
-import com.medilabosolutions.assessmentService.controller.dtos.NoteDto;
-import com.medilabosolutions.assessmentService.controller.dtos.PatientDTO;
+import com.medilabosolutions.assessmentService.dtos.NoteDto;
+import com.medilabosolutions.assessmentService.dtos.PatientDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,11 +15,12 @@ public interface AssessmentRepository {
     /**
      * Gets patient by id.
      *
+     * @param userId the user id
      * @param id the id
      * @return the patient by id
      * @throws Exception the exception
      */
-    PatientDTO getPatientById(Long id) throws Exception;
+    PatientDTO getPatientById(String userId, Long id) throws Exception;
 
     /**
      * Gets notes by patient id.

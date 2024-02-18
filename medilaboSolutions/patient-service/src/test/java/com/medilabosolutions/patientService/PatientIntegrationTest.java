@@ -78,27 +78,30 @@ public class PatientIntegrationTest {
     @BeforeEach
     void setUpTest() {
         JdbcTestUtils.deleteFromTables(jdbcTemplate,  "patients");
-        jdbcTemplate.execute("INSERT INTO patients(id, firstname, lastname, birthdate, gender, address, phone) VALUES(1,'Test','TestNone','1966-12-31','F','1 Brookside St','1002223333'); INSERT INTO patients(id, firstname, lastname, birthdate, gender, address, phone) VALUES(2,'Test','TestBorderline','1945-06-24','M','2 High St','2003334444');");
+        jdbcTemplate.execute("INSERT INTO patients(id, user_id, firstname, lastname, birthdate, gender, address, phone)" +
+                " VALUES(1,'user','Test','TestNone','1966-12-31','F','1 Brookside St','1002223333');" +
+                " INSERT INTO patients(id, user_id, firstname, lastname, birthdate, gender, address, phone)" +
+                " VALUES(2,'user','Test','TestBorderline','1945-06-24','M','2 High St','2003334444');");
     }
 
     @Test
     void getPatientsShouldReturnTheListOfPatientCasesTest() {
 
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients",
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients?userId=user",
                 String.class)).contains(loadJson("PatientCases.json"));
     }
 
     @Test
     void getPatientByIdShouldReturnOneOfThePatientCasesTest() {
 
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId ,
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId + "?userId=user" ,
                 String.class)).contains(loadJson("OneOfThePatientCases.json"));
     }
 
     @Test
     void getPatientNotExistentShouldReturnAnExceptionTest() {
 
-        assertNull(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + 5 ,
+        assertNull(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + 5  + "?userId=user" ,
                 String.class));
     }
 
@@ -114,7 +117,7 @@ public class PatientIntegrationTest {
         HttpResponse<String> result = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(result.statusCode(), 200);
 
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId ,
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId + "?userId=user" ,
                 String.class)).contains(loadJson("UpdateOneOfThePatientCases.json"));
     }
 
@@ -130,7 +133,7 @@ public class PatientIntegrationTest {
         HttpResponse<String> result = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(result.statusCode(), 404);
 
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId ,
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/patients/" + patientId + "?userId=user" ,
                 String.class)).contains(loadJson("OneOfThePatientCases.json"));
     }
 }

@@ -1,8 +1,8 @@
 package com.medilabosolutions.clientService.repository;
 
-import com.medilabosolutions.clientService.controller.dtos.NoteDto;
-import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
-import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
+import com.medilabosolutions.clientService.dtos.NoteDto;
+import com.medilabosolutions.clientService.dtos.PatientDTO;
+import com.medilabosolutions.clientService.enums.Assessment;
 import com.medilabosolutions.clientService.mapper.AssessmentMapper;
 import com.medilabosolutions.clientService.mapper.NoteMapper;
 import com.medilabosolutions.clientService.mapper.PatientMapper;
@@ -42,12 +42,13 @@ public class ClientRepositoryApiImpl implements ClientRepository {
     /**
      * Gets patients.
      *
+     * @param userId the user id
      * @return the patients
      * @throws Exception the exception
      */
     @Override
-    public List<PatientDTO> getPatients() throws Exception {
-        HttpRequest request = getApiRequestBuilder.getRequest("/patients");
+    public List<PatientDTO> getPatients(String userId) throws Exception {
+        HttpRequest request = getApiRequestBuilder.getRequest("/patients?userId=" + userId);
         HttpResponse<String> response = getApiRequestBuilder.getStringHttpResponse(request);
         checkIfStatusExpected(200, response.statusCode(), "patients");
         return patientMapper.toListPatient(response.body());
@@ -56,13 +57,14 @@ public class ClientRepositoryApiImpl implements ClientRepository {
     /**
      * Gets patient by id.
      *
+     * @param userId the user id
      * @param id the patient id
      * @return the patient by id
      * @throws Exception the exception
      */
     @Override
-    public PatientDTO getPatientById(Long id) throws Exception {
-        HttpRequest request = getApiRequestBuilder.getRequest("/patients/" + id);
+    public PatientDTO getPatientById(String userId, Long id) throws Exception {
+        HttpRequest request = getApiRequestBuilder.getRequest("/patients/" + id + "?userId=" + userId);
         HttpResponse<String> response = getApiRequestBuilder.getStringHttpResponse(request);
         checkIfStatusExpected(200, response.statusCode(), "patient");
         return patientMapper.fromStringToPatient(response.body());
@@ -113,13 +115,14 @@ public class ClientRepositoryApiImpl implements ClientRepository {
     /**
      * Gets assessment.
      *
+     * @param userId the user id
      * @param id the patient id
      * @return the assessment
      * @throws Exception the exception
      */
     @Override
-    public Assessment getAssessment(Long id) throws Exception {
-        HttpRequest request = getApiRequestBuilder.getRequest("/assessment/" + id);
+    public Assessment getAssessment(String userId, Long id) throws Exception {
+        HttpRequest request = getApiRequestBuilder.getRequest("/assessment/" + id + "?userId=" + userId);
         HttpResponse<String> response = getApiRequestBuilder.getStringHttpResponse(request);
         checkIfStatusExpected(200, response.statusCode(), "assessment");
         return assessmentMapper.fromStringToAssessment(response.body());
@@ -135,9 +138,7 @@ public class ClientRepositoryApiImpl implements ClientRepository {
      */
     public void checkIfStatusExpected(int statusExpected, int status, String request) throws Exception {
         if (status != statusExpected) {
-            if (status == 401) {
-                throw new NotAcceptableStatusException("You don't have the authorization");
-            } else if (status == 404) {
+            if (status == 404) {
                 throw new NotAcceptableStatusException("Element not found");
             } else {
                 throw new Exception("An error occurred during the request of the " + request);

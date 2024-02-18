@@ -3,7 +3,7 @@ package com.medilabosolutions.clientService.mapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
+import com.medilabosolutions.clientService.enums.Assessment;
 import org.springframework.stereotype.Service;
 
 /**

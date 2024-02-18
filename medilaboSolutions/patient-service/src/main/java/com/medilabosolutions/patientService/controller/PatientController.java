@@ -25,12 +25,13 @@ public class PatientController {
     /**
      * Gets patients.
      *
+     * @param userId the user id
      * @return the patients
      */
     @GetMapping("/patients")
-    public ResponseEntity<List<PatientDTO>> getPatients() {
+    public ResponseEntity<List<PatientDTO>> getPatients(@RequestParam String userId) {
         try {
-            return ResponseEntity.ok(patientService.getPatients().stream().map(patientMapper::from).toList());
+            return ResponseEntity.ok(patientService.getPatients(userId).stream().map(patientMapper::from).toList());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -39,13 +40,14 @@ public class PatientController {
     /**
      * Gets patient by id.
      *
+     * @param userId the user id
      * @param id the id
      * @return the patient by id
      */
     @GetMapping("/patients/{id}")
-    public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id) {
+    public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id, @RequestParam String userId) {
         try {
-            return ResponseEntity.ok(patientMapper.from(patientService.getPatientById(id)));
+            return ResponseEntity.ok(patientMapper.from(patientService.getPatientById(userId, id)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

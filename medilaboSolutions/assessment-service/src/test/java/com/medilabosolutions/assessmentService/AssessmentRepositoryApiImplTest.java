@@ -1,6 +1,6 @@
 package com.medilabosolutions.assessmentService;
 
-import com.medilabosolutions.assessmentService.controller.dtos.PatientDTO;
+import com.medilabosolutions.assessmentService.dtos.PatientDTO;
 import com.medilabosolutions.assessmentService.mapper.NoteMapper;
 import com.medilabosolutions.assessmentService.mapper.PatientMapper;
 import com.medilabosolutions.assessmentService.repository.ApiRequestBuilder;
@@ -44,20 +44,19 @@ public class AssessmentRepositoryApiImplTest {
         getRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(new URI("http://localhost:9999"))
-                .header("Authorization", "Basic username:userPassword")
                 .build();
     }
 
     @Test
     void getPatientByIdShouldCallApiMethods() throws Exception {
-        when(apiRequestBuilder.getRequest("/patients/1")).thenReturn(getRequest);
+        when(apiRequestBuilder.getRequest("/patients/1?userId=user")).thenReturn(getRequest);
         when(apiRequestBuilder.getStringHttpResponse(getRequest)).thenReturn(response);
         when(response.statusCode()).thenReturn(200);
         when(patientMapper.fromStringToPatient(response.body())).thenReturn(new PatientDTO());
 
-        assertNotNull(assessmentRepositoryApi.getPatientById(1L));
+        assertNotNull(assessmentRepositoryApi.getPatientById("user", 1L));
 
-        verify(apiRequestBuilder, times(1)).getRequest("/patients/1");
+        verify(apiRequestBuilder, times(1)).getRequest("/patients/1?userId=user");
         verify(apiRequestBuilder, times(1)).getStringHttpResponse(getRequest);
         verify(response, times(1)).statusCode();
         verify(patientMapper, times(1)).fromStringToPatient(response.body());
@@ -76,13 +75,6 @@ public class AssessmentRepositoryApiImplTest {
         verify(apiRequestBuilder, times(1)).getStringHttpResponse(getRequest);
         verify(response, times(1)).statusCode();
         verify(noteMapper, times(1)).toListNote(response.body());
-    }
-
-    @Test
-    void checkIfStatusExpected401ShouldThrowException() {
-        Exception exception = assertThrows(Exception.class, () -> assessmentRepositoryApi.checkIfStatusExpected(401));
-
-        assertEquals("You don't have the authorization", exception.getMessage());
     }
 
     @Test

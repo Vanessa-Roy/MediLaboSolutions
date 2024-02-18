@@ -9,7 +9,6 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Base64;
 
 /**
  * The type Api request builder.
@@ -22,17 +21,6 @@ public class ApiRequestBuilder {
      */
     @Value("${gateway.url}")
     public String gatewayUrl;
-    /**
-     * The Username.
-     */
-    @Value("${user.username}")
-    public String username;
-    /**
-     * The User password.
-     */
-    @Value("${user.password}")
-    public String userPassword;
-
 
     /**
      * Gets request.
@@ -45,7 +33,6 @@ public class ApiRequestBuilder {
         return HttpRequest.newBuilder()
                 .GET()
                 .uri(new URI(gatewayUrl + endpoint))
-                .header("Authorization", getAuthorizationValue())
                 .build();
     }
 
@@ -62,7 +49,6 @@ public class ApiRequestBuilder {
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
                 .uri(new URI(gatewayUrl + endpoint))
                 .header("Content-Type", "application/json")
-                .header("Authorization", getAuthorizationValue())
                 .build();
     }
 
@@ -79,7 +65,6 @@ public class ApiRequestBuilder {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .uri(new URI(gatewayUrl + endpoint))
                 .header("Content-Type", "application/json")
-                .header("Authorization", getAuthorizationValue())
                 .build();
     }
 
@@ -93,9 +78,5 @@ public class ApiRequestBuilder {
      */
     public HttpResponse<String> getStringHttpResponse(HttpRequest request) throws IOException, InterruptedException {
         return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-    private String getAuthorizationValue() {
-        return "Basic " + Base64.getEncoder().encodeToString((username + ":" + userPassword).getBytes());
     }
 }

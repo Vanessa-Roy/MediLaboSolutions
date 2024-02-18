@@ -52,8 +52,6 @@ services:
   gateway-service:
     build: ./gateway-service
     container_name: gateway-service
-    env_file:
-      - ./gateway-service/.env.docker
     depends_on:
       patient-service:
         condition: service_healthy

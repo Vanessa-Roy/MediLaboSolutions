@@ -12,17 +12,19 @@ public interface PatientService {
     /**
      * Gets patients.
      *
+     * @param userId the user id
      * @return the patients
      */
-    List<Patient> getPatients();
+    List<Patient> getPatients(String userId);
 
     /**
      * Gets patient by id.
      *
+     * @param userId the user id
      * @param id the id
      * @return the patient by id
      */
-    Patient getPatientById(Long id);
+    Patient getPatientById(String userId, Long id) throws Exception;
 
     /**
      * Update patient.

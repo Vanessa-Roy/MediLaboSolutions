@@ -1,10 +1,10 @@
 package com.medilabosolutions.assessmentService.service;
 
-import com.medilabosolutions.assessmentService.controller.dtos.NoteDto;
-import com.medilabosolutions.assessmentService.controller.dtos.PatientDTO;
-import com.medilabosolutions.assessmentService.controller.dtos.enums.Gender;
-import com.medilabosolutions.assessmentService.model.Assessment;
-import com.medilabosolutions.assessmentService.model.Trigger;
+import com.medilabosolutions.assessmentService.dtos.NoteDto;
+import com.medilabosolutions.assessmentService.dtos.PatientDTO;
+import com.medilabosolutions.assessmentService.enums.Gender;
+import com.medilabosolutions.assessmentService.enums.Assessment;
+import com.medilabosolutions.assessmentService.enums.Trigger;
 import com.medilabosolutions.assessmentService.repository.AssessmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,16 +30,17 @@ public class AssessmentService {
      * Gets assessment.
      *
      * @param patientId the patient id
+     * @param userId the user id
      * @return the assessment
      * @throws Exception the exception
      */
-    public Assessment getAssessment(Long patientId) throws Exception {
+    public Assessment getAssessment(Long patientId, String userId) throws Exception {
         List<NoteDto> noteList = getNotesByPatient(patientId);
         int numberOfTriggerByPatient = (int) getNumberOfTriggerByPatient(noteList);
         if ( numberOfTriggerByPatient == 0 ) {
             return Assessment.NONE;
         }
-        PatientDTO patient = getPatientById(patientId);
+        PatientDTO patient = getPatientById(userId, patientId);
         int patientAge = getAgePatient(patient.getBirthdate());
         if ( isEarlyOnset(numberOfTriggerByPatient, patientAge, patient.getGender()) ) {
             return Assessment.EARLY_ONSET;
@@ -71,13 +72,14 @@ public class AssessmentService {
     /**
      * Gets patient by id.
      *
+     * @param userId the user id
      * @param id the id
      * @return the patient by id
      * @throws Exception the exception
      */
-    public PatientDTO getPatientById(long id) throws Exception {
+    public PatientDTO getPatientById(String userId, long id) throws Exception {
         try {
-            return assessmentRepository.getPatientById(id);
+            return assessmentRepository.getPatientById(userId, id);
         } catch (Exception e) {
             throw new Exception("Patient not found");
         }

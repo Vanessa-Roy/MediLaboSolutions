@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.medilabosolutions.assessmentService.controller.dtos.NoteDto;
+import com.medilabosolutions.assessmentService.dtos.NoteDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

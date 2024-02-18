@@ -15,8 +15,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,21 +30,32 @@ public class PatientServiceTest {
 
     @Test
     void getPatientsShouldCallFindAllRepositoryTest() {
-        when(patientRepository.findAll()).thenReturn(new ArrayList<>());
+        when(patientRepository.findAllByUserId(anyString())).thenReturn(new ArrayList<>());
 
-        patientService.getPatients();
+        patientService.getPatients(anyString());
 
-        verify(patientRepository, Mockito.times(1)).findAll();
+        verify(patientRepository, Mockito.times(1)).findAllByUserId(anyString());
     }
 
     @Test
-    void getPatientByIdShouldCallFindByIdRepositoryTest() {
+    void getPatientByIdShouldCallFindByIdRepositoryTest() throws Exception {
         Patient patientTest = new Patient();
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patientTest));
+        patientTest.setUserId("user");
+        when(patientRepository.findByIdAndUserId(1L, "user")).thenReturn(patientTest);
 
-        patientService.getPatientById(1L);
+        patientService.getPatientById("user", 1L);
 
-        verify(patientRepository, Mockito.times(1)).findById(anyLong());
+        verify(patientRepository, Mockito.times(1)).findByIdAndUserId(1L, "user");
+    }
+
+    @Test
+    void getPatientByIdWithWrongUserIdShouldNotCallSaveRepositoryTest() {
+        when(patientRepository.findByIdAndUserId(1L, "wrongUser")).thenReturn(null);
+
+        Exception exception = assertThrows(Exception.class, () -> patientService.getPatientById("wrongUser", 1L));
+
+        assertEquals("Patient not found", exception.getMessage());
+        verify(patientRepository, Mockito.times(1)).findByIdAndUserId(anyLong(), anyString());
     }
 
     @Test
@@ -59,18 +69,6 @@ public class PatientServiceTest {
 
         verify(patientRepository, Mockito.times(1)).findById(1L);
         verify(patientRepository, Mockito.times(1)).save(patientTest);
-    }
-
-    @Test
-    void updateIncorrectPatientShouldNotCallSaveRepositoryTest() {
-        Patient patientTest = new Patient();
-        patientTest.setId(1L);
-
-        Exception exception = assertThrows(Exception.class, () -> patientService.updatePatient(patientTest, 1L));
-
-        assertEquals("Patient Incorrect", exception.getMessage());
-        verify(patientRepository, Mockito.times(1)).findById(1L);
-        verify(patientRepository, Mockito.never()).save(any(Patient.class));
     }
 
     @Test

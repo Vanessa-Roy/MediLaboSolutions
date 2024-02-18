@@ -1,8 +1,8 @@
 package com.medilabosolutions.clientService.repository;
 
-import com.medilabosolutions.clientService.controller.dtos.NoteDto;
-import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
-import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
+import com.medilabosolutions.clientService.dtos.NoteDto;
+import com.medilabosolutions.clientService.dtos.PatientDTO;
+import com.medilabosolutions.clientService.enums.Assessment;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,19 +16,21 @@ public interface ClientRepository {
     /**
      * Gets patients.
      *
+     * @param userId the user id
      * @return the patients
      * @throws Exception the exception
      */
-    List<PatientDTO> getPatients() throws Exception;
+    List<PatientDTO> getPatients(String userId) throws Exception;
 
     /**
      * Gets patient by id.
      *
+     * @param userId the user id
      * @param id the id
      * @return the patient by id
      * @throws Exception the exception
      */
-    PatientDTO getPatientById(Long id) throws Exception;
+    PatientDTO getPatientById(String userId, Long id) throws Exception;
 
     /**
      * Update patient.
@@ -58,9 +60,10 @@ public interface ClientRepository {
     /**
      * Gets assessment.
      *
+     * @param userId the user id
      * @param id the id
      * @return the assessment
      * @throws Exception the exception
      */
-    Assessment getAssessment(Long id) throws Exception;
+    Assessment getAssessment(String userId, Long id) throws Exception;
 }

@@ -1,11 +1,12 @@
 package com.medilabosolutions.clientService.controller;
 
-import com.medilabosolutions.clientService.controller.dtos.NoteDto;
-import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
-import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
+import com.medilabosolutions.clientService.dtos.NoteDto;
+import com.medilabosolutions.clientService.dtos.PatientDTO;
+import com.medilabosolutions.clientService.enums.Assessment;
 import com.medilabosolutions.clientService.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,7 +39,7 @@ public class ClientController {
     @GetMapping()
     public String getPatients(Model model) {
         try {
-            List<PatientDTO> patientList = clientService.getPatients();
+            List<PatientDTO> patientList = clientService.getPatients(getUserId());
             model.addAttribute("patientList", patientList);
             return "patients";
         } catch (Exception e) {
@@ -57,11 +58,11 @@ public class ClientController {
     @GetMapping("/{id}")
     public String getPatientDetails(@PathVariable Long id, Model model) {
         try {
-            PatientDTO patient = clientService.getPatientById(id);
+            PatientDTO patient = clientService.getPatientById(getUserId(), id);
             model.addAttribute("patient", patient);
             List<NoteDto> noteList = clientService.getNotesByPatientId(id);
             model.addAttribute("noteList", noteList);
-            Assessment assessment = clientService.getAssessment(id);
+            Assessment assessment = clientService.getAssessment(getUserId(), id);
             model.addAttribute("assessment", assessment);
             return "patientDetails";
         } catch (NotAcceptableStatusException e) {
@@ -83,7 +84,7 @@ public class ClientController {
     @GetMapping("/{id}/details")
     public String updatePatient(@PathVariable Long id, Model model) {
         try {
-            PatientDTO patient = clientService.getPatientById(id);
+            PatientDTO patient = clientService.getPatientById(getUserId(), id);
             model.addAttribute("patient", patient);
             return "updatePatient";
         } catch (Exception e) {
@@ -107,7 +108,7 @@ public class ClientController {
             return "updatePatient";
         }
         try {
-            clientService.updatePatient(patient, id);
+            clientService.updatePatient(getUserId(), patient, id);
             return "redirect:/patients/{id}?successUpdate";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -125,9 +126,8 @@ public class ClientController {
     @GetMapping("/{id}/notes")
     public String getAddANoteForm(@PathVariable Long id, Model model) {
         try {
-            PatientDTO patient = clientService.getPatientById(id);
+            PatientDTO patient = clientService.getPatientById(getUserId(), id);
             model.addAttribute("patient", patient);
-            model.addAttribute("localDate", LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             return "addNote";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -147,7 +147,7 @@ public class ClientController {
     @PostMapping("/{id}/notes")
     public String addNoteToPatient(@PathVariable (name = "id") Long patientId, String content, LocalDate date, Model model) {
         try {
-            PatientDTO currentPatient = clientService.getPatientById(patientId);
+            PatientDTO currentPatient = clientService.getPatientById(getUserId(), patientId);
             if (date == null) {
                 date = LocalDate.now();
             }
@@ -164,5 +164,9 @@ public class ClientController {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
+    }
+
+    private static String getUserId() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

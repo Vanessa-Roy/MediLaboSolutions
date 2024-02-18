@@ -29,14 +29,15 @@ public class PatientMapper {
     /**
      * To patient from a dto.
      *
-     * @param patient the patient
+     * @param patientDTO the patient
      * @return the patient
      */
-    public Patient to(PatientDTO patient) {
-        if (patient == null) {
+    public Patient to(PatientDTO patientDTO) {
+        if (patientDTO == null) {
             return null;
         } else {
-            return modelMapper.map(patient, Patient.class);
+            Patient patient = modelMapper.map(patientDTO, Patient.class);
+            return patient;
         }
     }
 }

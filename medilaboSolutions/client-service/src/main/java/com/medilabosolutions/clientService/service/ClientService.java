@@ -1,8 +1,8 @@
 package com.medilabosolutions.clientService.service;
 
-import com.medilabosolutions.clientService.controller.dtos.NoteDto;
-import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
-import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
+import com.medilabosolutions.clientService.dtos.NoteDto;
+import com.medilabosolutions.clientService.dtos.PatientDTO;
+import com.medilabosolutions.clientService.enums.Assessment;
 import com.medilabosolutions.clientService.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +29,12 @@ public class ClientService {
     /**
      * Gets patients.
      *
+     * @param userId the user id
      * @return the patients
      * @throws Exception the exception
      */
-    public List<PatientDTO> getPatients() throws Exception {
-        List<PatientDTO> patientList = clientRepository.getPatients();
+    public List<PatientDTO> getPatients(String userId) throws Exception {
+        List<PatientDTO> patientList = clientRepository.getPatients(userId);
         patientList.sort(Comparator.comparing(PatientDTO::getId));
         return patientList;
     }
@@ -41,23 +42,25 @@ public class ClientService {
     /**
      * Gets patient by id.
      *
+     * @param userId the user id
      * @param id the id
      * @return the patient by id
      * @throws Exception the exception
      */
-    public PatientDTO getPatientById(Long id) throws Exception {
-        return clientRepository.getPatientById(id);
+    public PatientDTO getPatientById(String userId, Long id) throws Exception {
+        return clientRepository.getPatientById(userId, id);
     }
 
     /**
      * Update patient.
      *
+     * @param userId the user id
      * @param patient the patient
      * @param id      the id
      * @throws Exception the exception
      */
-    public void updatePatient(PatientDTO patient, Long id) throws Exception {
-        getPatientById(id);
+    public void updatePatient(String userId, PatientDTO patient, Long id) throws Exception {
+        getPatientById(userId, id);
         clientRepository.updatePatient(patient);
     }
 
@@ -87,11 +90,12 @@ public class ClientService {
     /**
      * Gets assessment.
      *
+     * @param userId the user id
      * @param id the id
      * @return the assessment
      * @throws Exception the exception
      */
-    public Assessment getAssessment(Long id) throws Exception {
-        return clientRepository.getAssessment(id);
+    public Assessment getAssessment(String userId, Long id) throws Exception {
+        return clientRepository.getAssessment(userId, id);
     }
 }

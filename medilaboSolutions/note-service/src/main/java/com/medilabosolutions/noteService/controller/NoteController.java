@@ -33,12 +33,6 @@ public class NoteController {
     NoteMapper noteMapper;
 
     /**
-     * The Note repository.
-     */
-    @Autowired
-    NoteRepository noteRepository;
-
-    /**
      * Gets notes by patient id.
      *
      * @param patientId the patient id

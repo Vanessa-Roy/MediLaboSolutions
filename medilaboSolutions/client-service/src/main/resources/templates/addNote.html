@@ -30,7 +30,7 @@
         </div>
         <div class="mb-3 row g-3 align-items-center">
           <div class="col-auto">
-            <input type="date" class="form-control" id="date" name="date" th:value="${#dates.format(localDate, 'yyyy-MM-dd')}">
+            <input type="date" class="form-control" id="date" name="date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
           </div>
         </div>
         <div class="mb-3">

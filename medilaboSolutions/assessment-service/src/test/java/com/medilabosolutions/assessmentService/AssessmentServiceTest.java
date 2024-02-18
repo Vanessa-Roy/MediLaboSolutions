@@ -1,10 +1,10 @@
 package com.medilabosolutions.assessmentService;
 
-import com.medilabosolutions.assessmentService.controller.dtos.NoteDto;
-import com.medilabosolutions.assessmentService.controller.dtos.PatientDTO;
-import com.medilabosolutions.assessmentService.controller.dtos.enums.Gender;
-import com.medilabosolutions.assessmentService.model.Assessment;
-import com.medilabosolutions.assessmentService.model.Trigger;
+import com.medilabosolutions.assessmentService.dtos.NoteDto;
+import com.medilabosolutions.assessmentService.dtos.PatientDTO;
+import com.medilabosolutions.assessmentService.enums.Gender;
+import com.medilabosolutions.assessmentService.enums.Assessment;
+import com.medilabosolutions.assessmentService.enums.Trigger;
 import com.medilabosolutions.assessmentService.repository.AssessmentRepository;
 import com.medilabosolutions.assessmentService.service.AssessmentService;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,18 +57,18 @@ public class AssessmentServiceTest {
 
     @Test
     public void getPatientByIdShouldReturnThePatient() throws Exception {
-        when(assessmentRepository.getPatientById(1L)).thenReturn(patientTest);
+        when(assessmentRepository.getPatientById( "user", 1L)).thenReturn(patientTest);
 
-        assertEquals(patientTest,assessmentService.getPatientById(1L));
+        assertEquals(patientTest,assessmentService.getPatientById( "user", 1L));
 
-        verify(assessmentRepository, times(1)).getPatientById(1L);
+        verify(assessmentRepository, times(1)).getPatientById( "user", 1L);
     }
 
     @Test
     public void getPatientIdWithIncorrectIdShouldNotReturnThePatient() throws Exception {
-        when(assessmentRepository.getPatientById(1L)).thenThrow(Exception.class);
+        when(assessmentRepository.getPatientById("user", 1L)).thenThrow(Exception.class);
 
-        Exception exception = assertThrows(Exception.class, () -> assessmentService.getPatientById(1L));
+        Exception exception = assertThrows(Exception.class, () -> assessmentService.getPatientById( "user", 1L));
 
         assertEquals("Patient not found", exception.getMessage());
     }
@@ -186,56 +186,56 @@ public class AssessmentServiceTest {
     public void getAssessmentWithEmptyNoteAndCorrectPatientIdShouldReturnTheAssessmentNone() throws Exception {
         when(assessmentRepository.getNotesByPatientId(1L)).thenReturn(new ArrayList<>());
 
-        assertEquals(Assessment.NONE, assessmentService.getAssessment(1L));
+        assertEquals(Assessment.NONE, assessmentService.getAssessment(1L, "user"));
 
-        verify(assessmentRepository, never()).getPatientById(1L);
+        verify(assessmentRepository, never()).getPatientById("user", 1L);
         verify(assessmentRepository, times(1)).getNotesByPatientId(1L);
     }
 
     @Test
     public void getAssessmentWithLessThan2TriggersAndCorrectPatientIdShouldReturnTheAssessmentNone() throws Exception {
-        when(assessmentRepository.getPatientById(1L)).thenReturn(patientTest);
+        when(assessmentRepository.getPatientById("user",1L)).thenReturn(patientTest);
         when(assessmentRepository.getNotesByPatientId(1L)).thenReturn(noteListTest);
 
-        assertEquals(Assessment.NONE, assessmentService.getAssessment(1L));
+        assertEquals(Assessment.NONE, assessmentService.getAssessment(1L, "user"));
 
-        verify(assessmentRepository, times(1)).getPatientById(1L);
+        verify(assessmentRepository, times(1)).getPatientById( "user", 1L);
         verify(assessmentRepository, times(1)).getNotesByPatientId(1L);
     }
 
     @Test
     public void getAssessmentWith8TriggersAndCorrectPatientIdShouldReturnTheAssessmentIsEarlyOnset() throws Exception {
-        when(assessmentRepository.getPatientById(1L)).thenReturn(patientTest);
+        when(assessmentRepository.getPatientById("user",1L)).thenReturn(patientTest);
         noteTest.setContent("reaction, cholesterol, smoker, weight, height, relapse, abnormal, dizziness");
         when(assessmentRepository.getNotesByPatientId(1L)).thenReturn(noteListTest);
 
-        assertEquals(Assessment.EARLY_ONSET, assessmentService.getAssessment(1L));
+        assertEquals(Assessment.EARLY_ONSET, assessmentService.getAssessment(1L, "user"));
 
-        verify(assessmentRepository, times(1)).getPatientById(1L);
+        verify(assessmentRepository, times(1)).getPatientById( "user", 1L);
         verify(assessmentRepository, times(1)).getNotesByPatientId(1L);
     }
 
     @Test
     public void getAssessmentWith4TriggersAndCorrectPatientIdShouldReturnTheAssessmentIsInDanger() throws Exception {
-        when(assessmentRepository.getPatientById(1L)).thenReturn(patientTest);
+        when(assessmentRepository.getPatientById("user",1L)).thenReturn(patientTest);
         noteTest.setContent("reaction, cholesterol, smoker, weight, height, relapse");
         when(assessmentRepository.getNotesByPatientId(1L)).thenReturn(noteListTest);
 
-        assertEquals(Assessment.IN_DANGER, assessmentService.getAssessment(1L));
+        assertEquals(Assessment.IN_DANGER, assessmentService.getAssessment(1L, "user"));
 
-        verify(assessmentRepository, times(1)).getPatientById(1L);
+        verify(assessmentRepository, times(1)).getPatientById( "user", 1L);
         verify(assessmentRepository, times(1)).getNotesByPatientId(1L);
     }
 
     @Test
     public void getAssessmentWith2TriggersAndCorrectPatientIdShouldReturnTheAssessmentBorderline() throws Exception {
-        when(assessmentRepository.getPatientById(1L)).thenReturn(patientTest);
+        when(assessmentRepository.getPatientById( "user", 1L)).thenReturn(patientTest);
         noteTest.setContent("reaction, cholesterol");
         when(assessmentRepository.getNotesByPatientId(1L)).thenReturn(noteListTest);
 
-        assertEquals(Assessment.BORDERLINE, assessmentService.getAssessment(1L));
+        assertEquals(Assessment.BORDERLINE, assessmentService.getAssessment(1L, "user"));
 
-        verify(assessmentRepository, times(1)).getPatientById(1L);
+        verify(assessmentRepository, times(1)).getPatientById("user", 1L);
         verify(assessmentRepository, times(1)).getNotesByPatientId(1L);
     }
 }
