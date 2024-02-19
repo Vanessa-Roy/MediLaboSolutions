@@ -3,9 +3,9 @@ package com.medilabosolutions.clientService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.medilabosolutions.clientService.controller.dtos.NoteDto;
-import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
-import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
+import com.medilabosolutions.clientService.dtos.NoteDto;
+import com.medilabosolutions.clientService.dtos.PatientDTO;
+import com.medilabosolutions.clientService.enums.Assessment;
 import com.medilabosolutions.clientService.repository.ClientRepository;
 import com.medilabosolutions.clientService.service.ClientService;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,6 +25,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -78,29 +79,30 @@ public class ClientServiceTest {
 
     @Test
     public void getPatientsShouldCallClientRepositoryAndReturnListOfPatientsTest() throws Exception {
-        when(clientRepository.getPatients()).thenReturn(patientList);
+        when(clientRepository.getPatients(anyString())).thenReturn(patientList);
 
-        List<PatientDTO> result = clientService.getPatients();
+        List<PatientDTO> result = clientService.getPatients(anyString());
 
-        verify(clientRepository, Mockito.times(1)).getPatients();
+        verify(clientRepository, Mockito.times(1)).getPatients(anyString()
+        );
         assertEquals(patientList, result);
     }
 
     @Test
     public void getPatientByIdShouldCallClientRepositoryAndReturnOnePatientTest() throws Exception {
-        when(clientRepository.getPatientById(anyLong())).thenReturn(patient);
+        when(clientRepository.getPatientById(anyString(), anyLong())).thenReturn(patient);
 
-        PatientDTO result = clientService.getPatientById(anyLong());
+        PatientDTO result = clientService.getPatientById(anyString(), anyLong());
 
-        verify(clientRepository, Mockito.times(1)).getPatientById(anyLong());
+        verify(clientRepository, Mockito.times(1)).getPatientById(anyString(), anyLong());
         assertEquals(patient, result);
     }
 
     @Test
     public void updatePatientShouldCallClientRepositoryAndUpdateThePatientTest() throws Exception {
-        clientService.updatePatient(updatePatient, anyLong());
+        clientService.updatePatient(anyString(), updatePatient, anyLong());
 
-        verify(clientRepository, Mockito.times(1)).getPatientById(anyLong());
+        verify(clientRepository, Mockito.times(1)).getPatientById(anyString(), anyLong());
         verify(clientRepository, Mockito.times(1)).updatePatient(updatePatient);
     }
 
@@ -123,11 +125,11 @@ public class ClientServiceTest {
 
     @Test
     public void getAssessmentByPatientIdShouldCallClientRepositoryAndReturnAssessmentTest() throws Exception {
-        when(clientRepository.getAssessment(anyLong())).thenReturn(assessment);
+        when(clientRepository.getAssessment(anyString(), anyLong())).thenReturn(assessment);
 
-        Assessment result = clientService.getAssessment(anyLong());
+        Assessment result = clientService.getAssessment(anyString(), anyLong());
 
-        verify(clientRepository, Mockito.times(1)).getAssessment(anyLong());
+        verify(clientRepository, Mockito.times(1)).getAssessment(anyString(), anyLong());
         assertEquals(assessment, result);
     }
 }

@@ -1,6 +1,6 @@
 package com.medilabosolutions.clientService;
 
-import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
+import com.medilabosolutions.clientService.dtos.PatientDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

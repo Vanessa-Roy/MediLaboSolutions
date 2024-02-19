@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * Represent a patient
+ */
 @Entity
 @Table(name = "patients")
 @Getter
@@ -16,6 +19,8 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
+    private String userId;
     @Column(nullable = false)
     private String firstname;
     @Column(nullable = false)

@@ -65,16 +65,16 @@
           Patient's Risk For Diabetes
         </div>
         <div class="card-body" th:switch="${assessment}">
-          <span th:case="${T(com.medilabosolutions.clientService.controller.dtos.enums.Assessment).NONE}"
+          <span th:case="${T(com.medilabosolutions.clientService.enums.Assessment).NONE}"
                 th:text="${assessment}"
                 class="btn btn-success disabled"></span>
-          <span th:case="${T(com.medilabosolutions.clientService.controller.dtos.enums.Assessment).BORDERLINE}"
+          <span th:case="${T(com.medilabosolutions.clientService.enums.Assessment).BORDERLINE}"
                 th:text="${assessment}"
                 class="btn btn-outline-warning disabled"></span>
-          <span th:case="${T(com.medilabosolutions.clientService.controller.dtos.enums.Assessment).IN_DANGER}"
+          <span th:case="${T(com.medilabosolutions.clientService.enums.Assessment).IN_DANGER}"
                 th:text="${assessment}"
                 class="btn btn-warning disabled"></span>
-          <span th:case="${T(com.medilabosolutions.clientService.controller.dtos.enums.Assessment).EARLY_ONSET}"
+          <span th:case="${T(com.medilabosolutions.clientService.enums.Assessment).EARLY_ONSET}"
                 th:text="${assessment}"
                 class="btn btn-danger disabled"></span>
         </div>

@@ -5,9 +5,19 @@ import com.medilabosolutions.patientService.model.Patient;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Patient mapper.
+ */
 @Service
 public class PatientMapper {
     private final ModelMapper modelMapper = new ModelMapper();
+
+    /**
+     * To dto from a patient.
+     *
+     * @param patient the patient
+     * @return the patient dto
+     */
     public PatientDTO from(Patient patient) {
         if (patient == null) {
             return null;
@@ -16,11 +26,18 @@ public class PatientMapper {
         }
     }
 
-    public Patient to(PatientDTO patient) {
-        if (patient == null) {
+    /**
+     * To patient from a dto.
+     *
+     * @param patientDTO the patient
+     * @return the patient
+     */
+    public Patient to(PatientDTO patientDTO) {
+        if (patientDTO == null) {
             return null;
         } else {
-            return modelMapper.map(patient, Patient.class);
+            Patient patient = modelMapper.map(patientDTO, Patient.class);
+            return patient;
         }
     }
 }

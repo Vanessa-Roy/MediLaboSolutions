@@ -1,10 +1,10 @@
 package com.medilabosolutions.assessmentService.service;
 
-import com.medilabosolutions.assessmentService.controller.dtos.NoteDto;
-import com.medilabosolutions.assessmentService.controller.dtos.PatientDTO;
-import com.medilabosolutions.assessmentService.controller.dtos.enums.Gender;
-import com.medilabosolutions.assessmentService.model.Assessment;
-import com.medilabosolutions.assessmentService.model.Trigger;
+import com.medilabosolutions.assessmentService.dtos.NoteDto;
+import com.medilabosolutions.assessmentService.dtos.PatientDTO;
+import com.medilabosolutions.assessmentService.enums.Gender;
+import com.medilabosolutions.assessmentService.enums.Assessment;
+import com.medilabosolutions.assessmentService.enums.Trigger;
 import com.medilabosolutions.assessmentService.repository.AssessmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,33 +14,54 @@ import java.time.Period;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The type Assessment service.
+ */
 @Service
 public class AssessmentService {
 
+    /**
+     * The Assessment repository.
+     */
     @Autowired
     AssessmentRepository assessmentRepository;
 
-    public Assessment getAssessment(Long patientId) throws Exception {
+    /**
+     * Gets assessment.
+     *
+     * @param patientId the patient id
+     * @param userId the user id
+     * @return the assessment
+     * @throws Exception the exception
+     */
+    public Assessment getAssessment(Long patientId, String userId) throws Exception {
         List<NoteDto> noteList = getNotesByPatient(patientId);
-        int trigger = (int) getNumberOfTriggerByPatient(noteList);
-        if ( trigger == 0 ) {
+        int numberOfTriggerByPatient = (int) getNumberOfTriggerByPatient(noteList);
+        if ( numberOfTriggerByPatient == 0 ) {
             return Assessment.NONE;
         }
-        PatientDTO patient = getPatientById(patientId);
+        PatientDTO patient = getPatientById(userId, patientId);
         int patientAge = getAgePatient(patient.getBirthdate());
-        if ( isEarlyOnset(trigger, patientAge, patient.getGender()) ) {
+        if ( isEarlyOnset(numberOfTriggerByPatient, patientAge, patient.getGender()) ) {
             return Assessment.EARLY_ONSET;
         }
-        if ( isInDangerAssessment(trigger, patientAge, patient.getGender()) ) {
+        if ( isInDangerAssessment(numberOfTriggerByPatient, patientAge, patient.getGender()) ) {
             return Assessment.IN_DANGER;
         }
-        if ( isBorderlineAssessment(trigger, patientAge) ) {
+        if ( isBorderlineAssessment(numberOfTriggerByPatient, patientAge) ) {
             return Assessment.BORDERLINE;
         }
         return Assessment.NONE;
     }
 
 
+    /**
+     * Gets age patient.
+     *
+     * @param birthdate the birthdate
+     * @return the age patient
+     * @throws Exception the exception
+     */
     public int getAgePatient(LocalDate birthdate) throws Exception {
         if (birthdate.isAfter(LocalDate.now())) {
             throw new Exception("the date must be into the past");
@@ -48,14 +69,29 @@ public class AssessmentService {
         return Period.between(birthdate, LocalDate.now()).getYears();
     }
 
-    public PatientDTO getPatientById(long id) throws Exception {
+    /**
+     * Gets patient by id.
+     *
+     * @param userId the user id
+     * @param id the id
+     * @return the patient by id
+     * @throws Exception the exception
+     */
+    public PatientDTO getPatientById(String userId, long id) throws Exception {
         try {
-            return assessmentRepository.getPatientById(id);
+            return assessmentRepository.getPatientById(userId, id);
         } catch (Exception e) {
             throw new Exception("Patient not found");
         }
     }
 
+    /**
+     * Gets notes by patient.
+     *
+     * @param id the id
+     * @return the notes by patient
+     * @throws Exception the exception
+     */
     public List<NoteDto> getNotesByPatient(long id) throws Exception {
         try {
             return assessmentRepository.getNotesByPatientId(id);
@@ -64,6 +100,13 @@ public class AssessmentService {
         }
     }
 
+    /**
+     * Gets number of trigger by patient.
+     *
+     * @param noteList the note list
+     * @return the number of trigger by patient
+     * @throws Exception the exception
+     */
     public long getNumberOfTriggerByPatient(List<NoteDto> noteList) throws Exception {
         if (noteList == null) {
             throw new Exception("NoteList is null");
@@ -73,34 +116,60 @@ public class AssessmentService {
                 .count();
     }
 
-    public boolean isBorderlineAssessment(int trigger, int patientAge) {
-        return patientAge > 30 && trigger >= 2;
-    }
 
-    public boolean isInDangerAssessment(int trigger, int patientAge, Gender genderPatient) {
-        if ( patientAge <= 30 && genderPatient.equals(Gender.F) && trigger >= 4 ) {
+    /**
+     * Is early onset boolean.
+     *
+     * @param numberOfTrigger       the number of trigger by patient
+     * @param patientAge    the patient age
+     * @param genderPatient the gender patient
+     * @return the boolean
+     */
+    public boolean isEarlyOnset(int numberOfTrigger, int patientAge, Gender genderPatient) {
+        if ( patientAge <= 30 && genderPatient.equals(Gender.F) && numberOfTrigger >= 7 ) {
             return true;
         }
-        if ( patientAge <= 30 && genderPatient.equals(Gender.M) && trigger >= 3 ) {
+        if ( patientAge <= 30 && genderPatient.equals(Gender.M) && numberOfTrigger >= 5 ) {
             return true;
         }
-        if ( patientAge > 30 && trigger >= 6 ) {
+        if ( patientAge > 30 && numberOfTrigger >= 8 ) {
             return true;
         }
         return false;
     }
 
-    public boolean isEarlyOnset(int trigger, int patientAge, Gender genderPatient) {
-        if ( patientAge <= 30 && genderPatient.equals(Gender.F) && trigger >= 7 ) {
+    /**
+     * Is in danger assessment boolean.
+     *
+     * @param numberOfTrigger       the number of trigger by patient
+     * @param patientAge    the patient age
+     * @param genderPatient the gender patient
+     * @return the boolean
+     */
+    public boolean isInDangerAssessment(int numberOfTrigger, int patientAge, Gender genderPatient) {
+        if ( patientAge <= 30 && genderPatient.equals(Gender.F) && numberOfTrigger >= 4 ) {
             return true;
         }
-        if ( patientAge <= 30 && genderPatient.equals(Gender.M) && trigger >= 5 ) {
+        if ( patientAge <= 30 && genderPatient.equals(Gender.M) && numberOfTrigger >= 3 ) {
             return true;
         }
-        if ( patientAge > 30 && trigger >= 8 ) {
+        if ( patientAge > 30 && numberOfTrigger >= 6 ) {
             return true;
         }
         return false;
     }
+
+    /**
+     * Is borderline assessment boolean.
+     *
+     * @param numberOfTrigger    the number of trigger by patient
+     * @param patientAge the patient age
+     * @return the boolean
+     */
+    public boolean isBorderlineAssessment(int numberOfTrigger, int patientAge) {
+        return patientAge > 30 && numberOfTrigger >= 2;
+    }
+
+
 
 }

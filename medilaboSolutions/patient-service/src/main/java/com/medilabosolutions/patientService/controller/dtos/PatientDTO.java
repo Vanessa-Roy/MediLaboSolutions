@@ -8,6 +8,9 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a dto used to read or update a real patient.
+ */
 @Getter
 @Setter
 public class PatientDTO {

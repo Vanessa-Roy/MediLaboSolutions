@@ -72,7 +72,7 @@
                         </td>
                         <td>
                             <select name="gender" class="form-control" th:field="*{gender}">
-                                <option th:each="genderOpt : ${T(com.medilabosolutions.clientService.controller.dtos.enums.Gender).values()}"
+                                <option th:each="genderOpt : ${T(com.medilabosolutions.clientService.enums.Gender).values()}"
                                         th:value="${genderOpt}" th:text="${genderOpt}" ></option>
                             </select>
                         </td>

@@ -1,8 +1,8 @@
 package com.medilabosolutions.clientService;
 
-import com.medilabosolutions.clientService.controller.dtos.NoteDto;
-import com.medilabosolutions.clientService.controller.dtos.PatientDTO;
-import com.medilabosolutions.clientService.controller.dtos.enums.Assessment;
+import com.medilabosolutions.clientService.dtos.NoteDto;
+import com.medilabosolutions.clientService.dtos.PatientDTO;
+import com.medilabosolutions.clientService.enums.Assessment;
 import com.medilabosolutions.clientService.mapper.AssessmentMapper;
 import com.medilabosolutions.clientService.mapper.NoteMapper;
 import com.medilabosolutions.clientService.mapper.PatientMapper;
@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -52,32 +53,29 @@ public class ClientRepositoryApiImplTest {
         getRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(new URI("http://localhost:9999"))
-                .header("Authorization", "Basic username:userPassword")
                 .build();
         putRequest = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .uri(new URI("http://localhost:9999"))
                 .header("Content-Type", "application/json")
-                .header("Authorization", "Basic username:userPassword")
                 .build();
         postRequest = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(""))
                 .uri(new URI("http://localhost:9999"))
                 .header("Content-Type", "application/json")
-                .header("Authorization", "Basic username:userPassword")
                 .build();
     }
 
     @Test
     void getPatientsShouldCallApiMethods() throws Exception {
-        when(apiRequestBuilder1.getRequest("/patients")).thenReturn(getRequest);
+        when(apiRequestBuilder1.getRequest("/patients?userId=")).thenReturn(getRequest);
         when(apiRequestBuilder1.getStringHttpResponse(getRequest)).thenReturn(response);
         when(response.statusCode()).thenReturn(200);
         when(patientMapper.toListPatient(response.body())).thenReturn(new ArrayList<>());
 
-        assertNotNull(clientRepositoryApi.getPatients());
+        assertNotNull(clientRepositoryApi.getPatients(anyString()));
 
-        verify(apiRequestBuilder1, times(1)).getRequest("/patients");
+        verify(apiRequestBuilder1, times(1)).getRequest("/patients?userId=");
         verify(apiRequestBuilder1, times(1)).getStringHttpResponse(getRequest);
         verify(response, times(1)).statusCode();
         verify(patientMapper, times(1)).toListPatient(response.body());
@@ -85,14 +83,14 @@ public class ClientRepositoryApiImplTest {
 
     @Test
     void getPatientByIdShouldCallApiMethods() throws Exception {
-        when(apiRequestBuilder1.getRequest("/patients/1")).thenReturn(getRequest);
+        when(apiRequestBuilder1.getRequest("/patients/1?userId=user")).thenReturn(getRequest);
         when(apiRequestBuilder1.getStringHttpResponse(getRequest)).thenReturn(response);
         when(response.statusCode()).thenReturn(200);
         when(patientMapper.fromStringToPatient(response.body())).thenReturn(new PatientDTO());
 
-        assertNotNull(clientRepositoryApi.getPatientById(1L));
+        assertNotNull(clientRepositoryApi.getPatientById("user",1L));
 
-        verify(apiRequestBuilder1, times(1)).getRequest("/patients/1");
+        verify(apiRequestBuilder1, times(1)).getRequest("/patients/1?userId=user");
         verify(apiRequestBuilder1, times(1)).getStringHttpResponse(getRequest);
         verify(response, times(1)).statusCode();
         verify(patientMapper, times(1)).fromStringToPatient(response.body());
@@ -150,24 +148,17 @@ public class ClientRepositoryApiImplTest {
 
     @Test
     void getAssessmentShouldCallApiMethods() throws Exception {
-        when(apiRequestBuilder1.getRequest("/assessment/1")).thenReturn(getRequest);
+        when(apiRequestBuilder1.getRequest("/assessment/1?userId=user")).thenReturn(getRequest);
         when(apiRequestBuilder1.getStringHttpResponse(getRequest)).thenReturn(response);
         when(response.statusCode()).thenReturn(200);
         when(assessmentMapper.fromStringToAssessment(response.body())).thenReturn(Assessment.NONE);
 
-        assertNotNull(clientRepositoryApi.getAssessment(1L));
+        assertNotNull(clientRepositoryApi.getAssessment("user",1L));
 
-        verify(apiRequestBuilder1, times(1)).getRequest("/assessment/1");
+        verify(apiRequestBuilder1, times(1)).getRequest("/assessment/1?userId=user");
         verify(apiRequestBuilder1, times(1)).getStringHttpResponse(getRequest);
         verify(response, times(1)).statusCode();
         verify(assessmentMapper, times(1)).fromStringToAssessment(response.body());
-    }
-
-    @Test
-    void checkIfStatusExpected401ShouldThrowException() {
-        Exception exception = assertThrows(Exception.class, () -> clientRepositoryApi.checkIfStatusExpected(200, 401, ""));
-
-        assertEquals("406 NOT_ACCEPTABLE \"You don't have the authorization\"", exception.getMessage());
     }
 
     @Test
