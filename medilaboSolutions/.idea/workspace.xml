@@ -9,65 +9,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fb6df6e-f5cf-4544-8bdb-9dc47191605c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/configuration/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/docker-compose-medilaboSolutions.webm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/docker-compose-yp-screecast.mp4" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/.env.docker.example" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/.env.docker.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/controller/AssessmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/controller/AssessmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/controller/dtos/NoteDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/dtos/NoteDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/controller/dtos/PatientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/dtos/PatientDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/controller/dtos/enums/Gender.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/enums/Gender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/mapper/NoteMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/mapper/NoteMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/mapper/PatientMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/mapper/PatientMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/model/Assessment.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/enums/Assessment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/model/Trigger.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/enums/Trigger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/repository/ApiRequestBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/repository/ApiRequestBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/repository/AssessmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/repository/AssessmentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/repository/AssessmentRepositoryApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/repository/AssessmentRepositoryApiImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/service/AssessmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/java/com/medilabosolutions/assessmentService/service/AssessmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/test/java/com/medilabosolutions/assessmentService/AssessmentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/test/java/com/medilabosolutions/assessmentService/AssessmentControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/test/java/com/medilabosolutions/assessmentService/AssessmentMapperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/test/java/com/medilabosolutions/assessmentService/AssessmentMapperTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/test/java/com/medilabosolutions/assessmentService/AssessmentRepositoryApiImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/test/java/com/medilabosolutions/assessmentService/AssessmentRepositoryApiImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assessment-service/src/test/java/com/medilabosolutions/assessmentService/AssessmentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/assessment-service/src/test/java/com/medilabosolutions/assessmentService/AssessmentServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/.env.docker.example" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/.env.docker.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/controller/ClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/controller/dtos/NoteDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/dtos/NoteDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/controller/dtos/PatientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/dtos/PatientDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/controller/dtos/enums/Assessment.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/enums/Assessment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/controller/dtos/enums/Gender.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/enums/Gender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/mapper/AssessmentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/mapper/AssessmentMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/mapper/NoteMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/mapper/NoteMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/mapper/PatientMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/mapper/PatientMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/repository/ApiRequestBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/repository/ApiRequestBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/repository/ClientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/repository/ClientRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/repository/ClientRepositoryApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/repository/ClientRepositoryApiImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/java/com/medilabosolutions/clientService/service/ClientService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/resources/templates/addNote.html" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/resources/templates/addNote.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/resources/templates/patientDetails.html" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/resources/templates/patientDetails.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/main/resources/templates/updatePatient.html" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/main/resources/templates/updatePatient.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/test/java/com/medilabosolutions/clientService/ClientControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/test/java/com/medilabosolutions/clientService/ClientControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/test/java/com/medilabosolutions/clientService/ClientMapperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/test/java/com/medilabosolutions/clientService/ClientMapperTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/test/java/com/medilabosolutions/clientService/ClientRepositoryApiImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/test/java/com/medilabosolutions/clientService/ClientRepositoryApiImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/test/java/com/medilabosolutions/clientService/ClientServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/test/java/com/medilabosolutions/clientService/ClientServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-service/src/test/java/com/medilabosolutions/clientService/PatientDTOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-service/src/test/java/com/medilabosolutions/clientService/PatientDTOTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway-service/.env.docker.example" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway-service/src/main/java/com/medilabosolutions/gatewayService/config/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/note-service/src/main/java/com/medilabosolutions/noteService/controller/NoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/note-service/src/main/java/com/medilabosolutions/noteService/controller/NoteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/controller/PatientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/controller/PatientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/mapper/PatientMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/mapper/PatientMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/model/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/model/Patient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/repository/PatientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/repository/PatientRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/service/PatientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/service/PatientService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/service/PatientServiceDefaultImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/patient-service/src/main/java/com/medilabosolutions/patientService/service/PatientServiceDefaultImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patient-service/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/patient-service/src/main/resources/data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patient-service/src/test/java/com/medilabosolutions/patientService/PatientIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/patient-service/src/test/java/com/medilabosolutions/patientService/PatientIntegrationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patient-service/src/test/java/com/medilabosolutions/patientService/PatientServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/patient-service/src/test/java/com/medilabosolutions/patientService/PatientServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,19 +46,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/indov/git/medilaboSolutions/medilaboSolutions/assessment-service/src/main/java/com/medilabosolutions/assessmentService/service",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/indov/git/medilaboSolutions/medilaboSolutions/assessment-service/src/main/java/com/medilabosolutions/assessmentService/service&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="JUnit.assessmentService in assessment-service">
     <configuration name="AssessmentMapperTest.toPatientWithAJsonShouldReturnPatientTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="assessment-service" />
