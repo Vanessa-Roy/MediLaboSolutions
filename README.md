@@ -60,27 +60,27 @@ This application was developed with the following configuration
 
 ### architecture:
 
-![docker-compose schema](docker-compose.png)
+![docker-compose schema](./docs/docker-compose.png)
 
 ### patient-service:
 
-![patient-service-diagram](diagram-class-patient-service.png)
-![jacoco-report-patient](jacoco-report-patient-service.png)
+![patient-service-diagram](./docs/diagram-class-patient-service.png)
+![jacoco-report-patient](./docs/jacoco-report-patient-service.png)
 
 ### note-service:
 
-![note-service-diagram](diagram-class-note-service.png)
-![jacoco-report-note](jacoco-report-note-service.png)
+![note-service-diagram](./docs/diagram-class-note-service.png)
+![jacoco-report-note](./docs/jacoco-report-note-service.png)
 
 ### assessment-service:
 
-![assessment-service-diagram](diagram-class-assessment-service.png)
-![jacoco-report-assessment](jacoco-report-assessment-service.png)
+![assessment-service-diagram](./docs/diagram-class-assessment-service.png)
+![jacoco-report-assessment](./docs/jacoco-report-assessment-service.png)
 
 ### client-service:
 
-![client-service-diagram](diagram-class-client-service-1.png)
-![jacoco-report-client](jacoco-report-client-service.png)
+![client-service-diagram](./docs/diagram-class-client-service-1.png)
+![jacoco-report-client](./docs/jacoco-report-client-service.png)
 
 ## Author
 
