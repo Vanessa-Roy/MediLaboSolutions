@@ -52,10 +52,6 @@ This application was developed with the following configuration
 
 - command `docker-compose down` [ to remove the containers ]
 
-### docker-compose up screencast :
-
-<video src="[docker-compose-up-screecast.mp4](https://drive.google.com/file/d/1oVawFgWaxHi7KGwvUJeGKewAvfHKTL92/view?usp=sharing)" controls title="Title"></video>
-
 ## Documentation
 
 ### architecture:
